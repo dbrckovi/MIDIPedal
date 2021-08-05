@@ -10,4 +10,21 @@ PC runs a MIDI siulator program (either downloaded, or written here) which reads
 
 MIDI commands are received by DAW software and used to control VST plugins.
 
-Readme will be expanded
+
+[PROJECTS]
+
+ArduinoPedal 
+    - Arduino project
+    - Reads sensor values and sends them over serial connection
+
+MIDITest 
+    - C# Windows Forms solution
+    - Generates MIDI signals on Virtual MIDI device
+
+[LIBRARIES]
+
+VirtualMIDI
+    - Virtual MIDI device
+    - Provides libraries for creating virtual midi devices and sending/receiving MIDI messages
+    - Downloaded from http://www.tobias-erichsen.de/software/virtualmidi.html
+    
