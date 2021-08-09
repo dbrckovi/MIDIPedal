@@ -1,11 +1,14 @@
 #include <LiquidCrystal.h>
+#include <SoftwareSerial.h>
 
 const int button1 = 2, button2 = 3;
 const int pot1 = A1;
 const int potTreshold = 4;
 
 const int rs = 12, en = 13, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
+const int rx = 0, tx = 1;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+SoftwareSerial serial(rx, tx);
 
 int value = 0; //temp value for anything
 int buttonState1 = 0;
@@ -18,11 +21,21 @@ void setup() {
   
   lcd.begin(16, 2);
 
+  serial.begin(57600);
+  while (!serial) { ; }
+
   refreshDisplay();
 }
 
 void loop() {
-  if (readInputs()) refreshDisplay();
+  if (readInputs()) 
+  {
+    refreshDisplay();
+
+    int mapped = map(potValue, 0, 1023, 0, 255);
+    byte out = (byte)mapped;
+    serial.write(out);
+  }
 }
 
 //reads inputs into global variables and returns true if something was changed
