@@ -13,9 +13,36 @@ namespace ArduinoPedalBridge
 {
   public partial class Form1 : Form
   {
+    ArduinoConnection _connection = new ArduinoConnection();
+
     public Form1()
     {
       InitializeComponent();
+      _connection.ButtonStateChanged += _connection_ButtonStateChanged;
+      _connection.PotStateChanged += _connection_PotStateChanged;
+    }
+
+    private void _connection_PotStateChanged(int value)
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new MethodInvoker(() => _connection_PotStateChanged(value)));
+        return;
+      }
+
+      lblPot.Text = value.ToString();
+    }
+
+    private void _connection_ButtonStateChanged(int index, bool state)
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new MethodInvoker(() => _connection_ButtonStateChanged(index, state)));
+        return;
+      }
+
+      if (index == 0) lblButton1.Text = state.ToString();
+      else lblButton2.Text = state.ToString();
     }
 
     private void LoadSettings()
@@ -85,6 +112,40 @@ namespace ArduinoPedalBridge
       {
         MessageBox.Show(ex.Message);
       }
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+      try
+      {
+
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void btnConnect_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        if (cmbSerialPort.SelectedItem == null) throw new Exception("Port not selected");
+        if (cmbSerialBaud.SelectedItem == null) throw new Exception("Baud not selected");
+
+        string port = (string)cmbSerialPort.SelectedItem;
+        int baud = (int)cmbSerialBaud.SelectedItem;
+        _connection.Connect(port, baud);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+    {
+      _connection.Disconnect();
     }
   }
 }
