@@ -32,9 +32,9 @@ void loop() {
   {
     refreshDisplay();
 
-    int mapped = map(potValue, 0, 1023, 0, 255);
-    byte out = (byte)mapped;
-    serial.write(out);
+    //int mapped = map(potValue, 0, 1023, 0, 255);
+    //byte out = (byte)mapped;
+    //serial.write(out);
   }
 }
 
@@ -47,6 +47,7 @@ bool readInputs()
   if (buttonState1 != value)
   {
     buttonState1 = value;
+    sendButtonState(0, buttonState1);
     ret = true;
   }
 
@@ -54,6 +55,7 @@ bool readInputs()
   if (buttonState2 != value)
   {
     buttonState2 = value;
+    sendButtonState(1, buttonState2);
     ret = true;
   }
 
@@ -61,10 +63,26 @@ bool readInputs()
   if (potValue != value)
   {
     potValue = value;
+    sendPotState(potValue);
     ret = true;
   }
   
   return ret;
+}
+
+void sendButtonState(int index, bool state)
+{
+  byte data = 0;
+  data = data | (index << 1);
+  data = data | state;
+  serial.write(data);
+}
+
+void sendPotState(int value)
+{
+  byte data = 128;
+  data = data | value;
+  serial.write(data);
 }
 
 void refreshDisplay()
@@ -100,6 +118,7 @@ int getPotValue(int pin, int oldValue)
 
   if (value <= potTreshold) value = 0;
   if (value >= 1023 - potTreshold) value = 1023;
+  value = map(value, 0, 1023, 0, 127);
   
   return value;
 }
