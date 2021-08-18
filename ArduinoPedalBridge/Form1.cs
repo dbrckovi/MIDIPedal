@@ -14,6 +14,7 @@ namespace ArduinoPedalBridge
   public partial class Form1 : Form
   {
     ArduinoConnection _connection = new ArduinoConnection();
+    VirtualMIDI midi = null;
 
     public Form1()
     {
@@ -31,6 +32,9 @@ namespace ArduinoPedalBridge
       }
 
       lblPot.Text = value.ToString();
+
+      MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, MIDIChannel.C1, 0, (byte)value);
+      midi.sendCommand(message.GetBytes());
     }
 
     private void _connection_ButtonStateChanged(int index, bool state)
@@ -88,6 +92,15 @@ namespace ArduinoPedalBridge
       try
       {
         LoadSettings();
+
+        try
+        {
+          midi = new VirtualMIDI("Brc MIDI port");
+        }
+        catch (Exception ex)
+        {
+          MessageBox.Show(ex.Message);
+        }
       }
       catch (Exception ex)
       {
