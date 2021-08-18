@@ -1,124 +1,140 @@
-#include <LiquidCrystal.h>
 #include <SoftwareSerial.h>
 
-const int button1 = 2, button2 = 3;
+const int led[] = {4, 3, 2};
+const int button[] = {5, 6, 7};
 const int pot1 = A1;
-const int potTreshold = 4;
-
-const int rs = 12, en = 13, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
 const int rx = 0, tx = 1;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
 SoftwareSerial serial(rx, tx);
 
-int value = 0; //temp value for anything
-int buttonState1 = 0;
-int buttonState2 = 0;
+int buttonChangedTime[3];
+int potChangeTime = 0;
+int buttonState[3];
+int buttonTogglable[3];
+int buttonValue[3];
 int potValue = 0;
 
-void setup() {
-  pinMode(button1, INPUT_PULLUP);
-  pinMode(button2, INPUT_PULLUP);
+void setup() 
+{
+  pinMode(led[0], OUTPUT);
+  pinMode(led[1], OUTPUT);
+  pinMode(led[2], OUTPUT);
+  pinMode(button[0], INPUT_PULLUP);
+  pinMode(button[1], INPUT_PULLUP);
+  pinMode(button[2], INPUT_PULLUP);
   
-  lcd.begin(16, 2);
-
   serial.begin(57600);
   while (!serial) { ; }
 
-  refreshDisplay();
+  buttonTogglable[0] = 1;
 }
 
-void loop() {
-  if (readInputs()) 
-  {
-    refreshDisplay();
-
-    //int mapped = map(potValue, 0, 1023, 0, 255);
-    //byte out = (byte)mapped;
-    //serial.write(out);
-  }
-}
-
-//reads inputs into global variables and returns true if something was changed
-bool readInputs()
+void loop() 
 {
-  bool ret = false;
+  handleSerialInput();
+  handleButton(0);
+  handleButton(1);
+  handleButton(2);
+  handlePot();
+}
+
+//reads command from a serial port (if available) and handles it
+void handleSerialInput()
+{
+    
+}
+
+//reads input of specified button, if button value was changed, toggles led and sends new button state to serial
+void handleButton(int index)
+{
+  int elapsed = millis() - buttonChangedTime[index];
   
-  value = getButtonState(button1);
-  if (buttonState1 != value)
+  if (elapsed > 10)
   {
-    buttonState1 = value;
-    sendButtonState(0, buttonState1);
-    ret = true;
-  }
+    int x = isButtonPressed(index);
+    if (x != buttonState[index])
+    {
+      buttonState[index] = x;
+      
+      if (buttonTogglable[index])
+      {
+        if (x == 1)
+        {
+          if (buttonValue[index] == 1) buttonValue[index] = 0;
+          else buttonValue[index] = 1;
+          setLeds();
+          sendButtonValues();
+        }
+      }
+      else
+      {
+        buttonValue[index] = x;
+        setLeds();
+        sendButtonValues();
+      }
 
-  value = getButtonState(button2);
-  if (buttonState2 != value)
+      buttonChangedTime[index] = millis();
+    }
+  }
+}
+
+//reads pot value and if changed, sends the value to serial
+void handlePot()
+{
+  int elapsed = millis() - potChangeTime;
+
+  if (elapsed > 1)
   {
-    buttonState2 = value;
-    sendButtonState(1, buttonState2);
-    ret = true;
+    int x = getPotValue();
+    if (x != potValue)
+    {
+      potValue = x;
+      sendPotValue();
+      potChangeTime = elapsed;
+    }
   }
-
-  value = getPotValue(pot1, potValue);
-  if (potValue != value)
-  {
-    potValue = value;
-    sendPotState(potValue);
-    ret = true;
-  }
-  
-  return ret;
 }
 
-void sendButtonState(int index, bool state)
+//checks whether a hardware button is currently pressed (1) or depressed (0)
+int isButtonPressed(int index)
 {
-  byte data = 0;
-  data = data | (index << 1);
-  data = data | state;
-  serial.write(data);
-}
-
-void sendPotState(int value)
-{
-  byte data = 128;
-  data = data | value;
-  serial.write(data);
-}
-
-void refreshDisplay()
-{
-  lcd.setCursor(0,0);
-  lcd.print("B1:");
-  lcd.setCursor(4,0);
-  lcd.print(buttonState1);
-
-  lcd.setCursor(0,1);
-  lcd.print("B2:");
-  lcd.setCursor(4,1);
-  lcd.print(buttonState2);
-
-  lcd.setCursor(8,1);
-  lcd.print("    ");
-  lcd.setCursor(8,1);
-  lcd.print(potValue);
-}
-
-int getButtonState(int button)
-{
-  int value = digitalRead(button);
+  int value = digitalRead(button[index]);
   if (value == 0) return 1;
   else return 0;
 }
 
-//gets new analog value and saves it to variable if new value changed enough
-int getPotValue(int pin, int oldValue)
+int getPotValue()
 {
-  value = analogRead(pin);
-  if (abs(value - oldValue) <= potTreshold) value = oldValue;
+  int value = analogRead(pot1);
+  return map(value, 0, 1023, 0, 127);
+}
 
-  if (value <= potTreshold) value = 0;
-  if (value >= 1023 - potTreshold) value = 1023;
-  value = map(value, 0, 1023, 0, 127);
-  
-  return value;
+void setLeds()
+{
+  digitalWrite(led[0], buttonValue[0]);
+  digitalWrite(led[1], buttonValue[1]);
+  digitalWrite(led[2], buttonValue[2]);
+}
+
+void sendButtonValues()
+{
+  //Bit breakdown: 0VVVVVVV
+  //Most significant bit: 0 - denotes that this is a button state message
+  //Other bits (V): 1 - button is on, 0 - button is off. Bit significance denotes a button index (LSB is first button)
+  //Obviously, only last 3 bits are used since there are only 3 buttons
+
+  byte data = 0;
+
+  if (buttonValue[0] == 1) data = data | 1;
+  if (buttonValue[1] == 1) data = data | 2;
+  if (buttonValue[2] == 1) data = data | 4;
+
+  if (serial) serial.write(data);
+}
+
+void sendPotValue()
+{
+  byte data = 128;
+  data = data | potValue;
+  if (serial) serial.write(data);
 }

@@ -126,16 +126,30 @@ namespace ArduinoPedalBridge
       }
     }
 
+    private string ByteToBitString(int data)
+    {
+      char[] characters = new char[8];
+
+      for (int x = 0; x <= 7; x++)
+      {
+        if ((data & Convert.ToInt32(Math.Pow(2, x))) > 0)
+        {
+          characters[7 - x] = '1';
+        }
+        else
+        {
+          characters[7 - x] = '0';
+        }
+      }
+      return new string(characters);
+    }
+
     private void btnConnect_Click(object sender, EventArgs e)
     {
       try
       {
-        if (cmbSerialPort.SelectedItem == null) throw new Exception("Port not selected");
-        if (cmbSerialBaud.SelectedItem == null) throw new Exception("Baud not selected");
-
-        string port = (string)cmbSerialPort.SelectedItem;
-        int baud = (int)cmbSerialBaud.SelectedItem;
-        _connection.Connect(port, baud);
+        int a = int.Parse(textBox1.Text);
+        label1.Text = ByteToBitString(a);
       }
       catch (Exception ex)
       {

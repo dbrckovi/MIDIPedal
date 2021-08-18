@@ -57,9 +57,27 @@ namespace ArduinoPedalBridge
         return;
       }
 
-      txtIncomming.AppendText($"{data.ToString()}{Environment.NewLine}");
-      lblLastByte.Text = data.ToString();
+      //txtIncomming.AppendText($"{data.ToString()} - {ByteToBitString(data)}{Environment.NewLine}");
+      lblLastByte.Text = $"{data.ToString()} - {ByteToBitString(data)}";
       progressLastByte.Value = data;
+    }
+
+    private string ByteToBitString(int data)
+    {
+      char[] characters = new char[8];
+
+      for (int x = 0; x <= 7; x++)
+      {
+        if ((data & Convert.ToInt32(Math.Pow(2, x))) > 0)
+        {
+          characters[7 - x] = '1';
+        }
+        else
+        {
+          characters[7 - x] = '0';
+        }
+      }
+      return new string(characters);
     }
 
     private void frmSerialTester_FormClosed(object sender, FormClosedEventArgs e)
@@ -101,6 +119,11 @@ namespace ArduinoPedalBridge
       {
         MessageBox.Show(this, ex.Message);
       }
+    }
+
+    private void btnClear_Click(object sender, EventArgs e)
+    {
+      txtIncomming.Text = "";
     }
   }
 }

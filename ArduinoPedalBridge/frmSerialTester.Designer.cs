@@ -30,10 +30,10 @@ namespace ArduinoPedalBridge
     private void InitializeComponent()
     {
       this.panel1 = new System.Windows.Forms.Panel();
+      this.progressLastByte = new System.Windows.Forms.ProgressBar();
+      this.lblLastByte = new System.Windows.Forms.Label();
       this.btnClear = new System.Windows.Forms.Button();
       this.txtIncomming = new System.Windows.Forms.RichTextBox();
-      this.lblLastByte = new System.Windows.Forms.Label();
-      this.progressLastByte = new System.Windows.Forms.ProgressBar();
       this.panel1.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -49,26 +49,14 @@ namespace ArduinoPedalBridge
       this.panel1.Size = new System.Drawing.Size(625, 40);
       this.panel1.TabIndex = 0;
       // 
-      // btnClear
+      // progressLastByte
       // 
-      this.btnClear.Dock = System.Windows.Forms.DockStyle.Right;
-      this.btnClear.Location = new System.Drawing.Point(502, 3);
-      this.btnClear.Name = "btnClear";
-      this.btnClear.Size = new System.Drawing.Size(120, 34);
-      this.btnClear.TabIndex = 0;
-      this.btnClear.Text = "Clear";
-      this.btnClear.UseVisualStyleBackColor = true;
-      // 
-      // txtIncomming
-      // 
-      this.txtIncomming.BackColor = System.Drawing.Color.White;
-      this.txtIncomming.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.txtIncomming.Location = new System.Drawing.Point(0, 40);
-      this.txtIncomming.Name = "txtIncomming";
-      this.txtIncomming.ReadOnly = true;
-      this.txtIncomming.Size = new System.Drawing.Size(625, 381);
-      this.txtIncomming.TabIndex = 1;
-      this.txtIncomming.Text = "";
+      this.progressLastByte.Location = new System.Drawing.Point(240, 8);
+      this.progressLastByte.MarqueeAnimationSpeed = 0;
+      this.progressLastByte.Maximum = 255;
+      this.progressLastByte.Name = "progressLastByte";
+      this.progressLastByte.Size = new System.Drawing.Size(248, 24);
+      this.progressLastByte.TabIndex = 2;
       // 
       // lblLastByte
       // 
@@ -80,14 +68,27 @@ namespace ArduinoPedalBridge
       this.lblLastByte.TabIndex = 1;
       this.lblLastByte.Text = "0";
       // 
-      // progressLastByte
+      // btnClear
       // 
-      this.progressLastByte.Location = new System.Drawing.Point(80, 8);
-      this.progressLastByte.MarqueeAnimationSpeed = 0;
-      this.progressLastByte.Maximum = 255;
-      this.progressLastByte.Name = "progressLastByte";
-      this.progressLastByte.Size = new System.Drawing.Size(248, 24);
-      this.progressLastByte.TabIndex = 2;
+      this.btnClear.Dock = System.Windows.Forms.DockStyle.Right;
+      this.btnClear.Location = new System.Drawing.Point(502, 3);
+      this.btnClear.Name = "btnClear";
+      this.btnClear.Size = new System.Drawing.Size(120, 34);
+      this.btnClear.TabIndex = 0;
+      this.btnClear.Text = "Clear";
+      this.btnClear.UseVisualStyleBackColor = true;
+      this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+      // 
+      // txtIncomming
+      // 
+      this.txtIncomming.BackColor = System.Drawing.Color.White;
+      this.txtIncomming.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.txtIncomming.Location = new System.Drawing.Point(0, 40);
+      this.txtIncomming.Name = "txtIncomming";
+      this.txtIncomming.ReadOnly = true;
+      this.txtIncomming.Size = new System.Drawing.Size(625, 381);
+      this.txtIncomming.TabIndex = 1;
+      this.txtIncomming.Text = "";
       // 
       // frmSerialTester
       // 
