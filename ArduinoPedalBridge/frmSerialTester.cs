@@ -47,13 +47,14 @@ namespace ArduinoPedalBridge
         }
         Thread.Sleep(1);
       }
+      _port.Close();
     }
 
     private void VisualizeData(int data)
     {
       if (this.InvokeRequired)
       {
-        this.Invoke(new MethodInvoker(() => VisualizeData(data)));
+        this.BeginInvoke(new MethodInvoker(() => VisualizeData(data)));
         return;
       }
 

@@ -2,7 +2,7 @@
 
 const int led[] = {4, 3, 2};
 const int button[] = {5, 6, 7};
-const int pot1 = A1;
+const int pot1 = A2;
 const int rx = 0, tx = 1;
 
 SoftwareSerial serial(rx, tx);
@@ -23,11 +23,14 @@ void setup()
   pinMode(button[1], INPUT_PULLUP);
   pinMode(button[2], INPUT_PULLUP);
   
-  serial.begin(57600);
+  serial.begin(38400);
   while (!serial) { ; }
 
   buttonTogglable[0] = 1;
 }
+
+byte a = 3;
+int sent = 0;
 
 void loop() 
 {
@@ -36,6 +39,15 @@ void loop()
   handleButton(1);
   handleButton(2);
   handlePot();
+
+  int elapsed = millis() - sent;
+  if (elapsed > 10)
+  {
+    serial.write(a);
+    if (a == 3) a = 201;
+    else a = 3;
+    sent = millis();     
+  }
 }
 
 //reads command from a serial port (if available) and handles it
@@ -83,7 +95,7 @@ void handlePot()
 {
   int elapsed = millis() - potChangeTime;
 
-  if (elapsed > 1)
+  if (elapsed > 10)
   {
     int x = getPotValue();
     if (x != potValue)
@@ -134,6 +146,9 @@ void sendButtonValues()
 
 void sendPotValue()
 {
+  //Bit breakdown: 1VVVVVVV
+  //Most significant bit: 1 - denotes that this is a pot value message
+  //Other bits (V): is a 127 bit value of the pot
   byte data = 128;
   data = data | potValue;
   if (serial) serial.write(data);

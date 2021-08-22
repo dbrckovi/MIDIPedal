@@ -84,7 +84,7 @@ namespace ArduinoPedalBridge
       cmbSerialBaud.Items.Add(115200);
 
       //TODO: Load from settings
-      cmbSerialBaud.SelectedItem = 57600;
+      cmbSerialBaud.SelectedItem = 38400;
     }
 
     private void Form1_Load(object sender, EventArgs e)
