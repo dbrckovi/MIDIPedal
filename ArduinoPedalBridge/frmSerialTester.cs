@@ -19,6 +19,7 @@ namespace ArduinoPedalBridge
     SerialPort _port;
     Thread _worker;
     bool _shouldAbort = true;
+    DateTime _startTime = DateTime.Now;
 
     #region Constructors
     public frmSerialTester()
@@ -85,6 +86,8 @@ namespace ArduinoPedalBridge
     {
       try
       {
+        timer1.Enabled = false;
+
         if (_worker != null)
         {
           _shouldAbort = true;
@@ -125,6 +128,17 @@ namespace ArduinoPedalBridge
     private void btnClear_Click(object sender, EventArgs e)
     {
       txtIncomming.Text = "";
+    }
+
+    private void frmSerialTester_Shown(object sender, EventArgs e)
+    {
+      _startTime = DateTime.Now;
+    }
+
+    private void timer1_Tick(object sender, EventArgs e)
+    {
+      TimeSpan span = DateTime.Now - _startTime;
+      lblTime.Text = span.TotalSeconds.ToString();
     }
   }
 }

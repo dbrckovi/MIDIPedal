@@ -7,8 +7,8 @@ const int rx = 0, tx = 1;
 
 SoftwareSerial serial(rx, tx);
 
-int buttonChangedTime[3];
-int potChangeTime = 0;
+unsigned long buttonChangedTime[3];
+unsigned long potChangeTime = 0;
 int buttonState[3];
 int buttonTogglable[3];
 int buttonValue[3];
@@ -29,9 +29,6 @@ void setup()
   buttonTogglable[0] = 1;
 }
 
-byte a = 3;
-int sent = 0;
-
 void loop() 
 {
   handleSerialInput();
@@ -39,15 +36,6 @@ void loop()
   handleButton(1);
   handleButton(2);
   handlePot();
-
-  int elapsed = millis() - sent;
-  if (elapsed > 10)
-  {
-    serial.write(a);
-    if (a == 3) a = 201;
-    else a = 3;
-    sent = millis();     
-  }
 }
 
 //reads command from a serial port (if available) and handles it
@@ -59,7 +47,7 @@ void handleSerialInput()
 //reads input of specified button, if button value was changed, toggles led and sends new button state to serial
 void handleButton(int index)
 {
-  int elapsed = millis() - buttonChangedTime[index];
+  unsigned long elapsed = millis() - buttonChangedTime[index];
   
   if (elapsed > 10)
   {
@@ -93,7 +81,7 @@ void handleButton(int index)
 //reads pot value and if changed, sends the value to serial
 void handlePot()
 {
-  int elapsed = millis() - potChangeTime;
+  unsigned long elapsed = millis() - potChangeTime;
 
   if (elapsed > 10)
   {

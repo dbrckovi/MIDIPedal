@@ -29,16 +29,20 @@ namespace ArduinoPedalBridge
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       this.panel1 = new System.Windows.Forms.Panel();
+      this.lblTime = new System.Windows.Forms.Label();
       this.progressLastByte = new System.Windows.Forms.ProgressBar();
       this.lblLastByte = new System.Windows.Forms.Label();
       this.btnClear = new System.Windows.Forms.Button();
       this.txtIncomming = new System.Windows.Forms.RichTextBox();
+      this.timer1 = new System.Windows.Forms.Timer(this.components);
       this.panel1.SuspendLayout();
       this.SuspendLayout();
       // 
       // panel1
       // 
+      this.panel1.Controls.Add(this.lblTime);
       this.panel1.Controls.Add(this.progressLastByte);
       this.panel1.Controls.Add(this.lblLastByte);
       this.panel1.Controls.Add(this.btnClear);
@@ -46,8 +50,18 @@ namespace ArduinoPedalBridge
       this.panel1.Location = new System.Drawing.Point(0, 0);
       this.panel1.Name = "panel1";
       this.panel1.Padding = new System.Windows.Forms.Padding(3);
-      this.panel1.Size = new System.Drawing.Size(625, 40);
+      this.panel1.Size = new System.Drawing.Size(1019, 40);
       this.panel1.TabIndex = 0;
+      // 
+      // lblTime
+      // 
+      this.lblTime.AutoSize = true;
+      this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblTime.Location = new System.Drawing.Point(568, 8);
+      this.lblTime.Name = "lblTime";
+      this.lblTime.Size = new System.Drawing.Size(19, 20);
+      this.lblTime.TabIndex = 3;
+      this.lblTime.Text = "0";
       // 
       // progressLastByte
       // 
@@ -71,7 +85,7 @@ namespace ArduinoPedalBridge
       // btnClear
       // 
       this.btnClear.Dock = System.Windows.Forms.DockStyle.Right;
-      this.btnClear.Location = new System.Drawing.Point(502, 3);
+      this.btnClear.Location = new System.Drawing.Point(896, 3);
       this.btnClear.Name = "btnClear";
       this.btnClear.Size = new System.Drawing.Size(120, 34);
       this.btnClear.TabIndex = 0;
@@ -86,21 +100,27 @@ namespace ArduinoPedalBridge
       this.txtIncomming.Location = new System.Drawing.Point(0, 40);
       this.txtIncomming.Name = "txtIncomming";
       this.txtIncomming.ReadOnly = true;
-      this.txtIncomming.Size = new System.Drawing.Size(625, 381);
+      this.txtIncomming.Size = new System.Drawing.Size(1019, 381);
       this.txtIncomming.TabIndex = 1;
       this.txtIncomming.Text = "";
+      // 
+      // timer1
+      // 
+      this.timer1.Enabled = true;
+      this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
       // 
       // frmSerialTester
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(625, 421);
+      this.ClientSize = new System.Drawing.Size(1019, 421);
       this.Controls.Add(this.txtIncomming);
       this.Controls.Add(this.panel1);
       this.Name = "frmSerialTester";
       this.Text = "frmSerialTester";
       this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSerialTester_FormClosed);
       this.Load += new System.EventHandler(this.frmSerialTester_Load);
+      this.Shown += new System.EventHandler(this.frmSerialTester_Shown);
       this.panel1.ResumeLayout(false);
       this.panel1.PerformLayout();
       this.ResumeLayout(false);
@@ -114,5 +134,7 @@ namespace ArduinoPedalBridge
     private System.Windows.Forms.RichTextBox txtIncomming;
     private System.Windows.Forms.Label lblLastByte;
     private System.Windows.Forms.ProgressBar progressLastByte;
+    private System.Windows.Forms.Label lblTime;
+    private System.Windows.Forms.Timer timer1;
   }
 }
