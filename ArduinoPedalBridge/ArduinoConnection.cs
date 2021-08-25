@@ -10,44 +10,58 @@ namespace ArduinoPedalBridge
 {
   class ArduinoConnection
   {
-    private string _port;
-    private int _baud;
-    SerialPort _connection;
+    SerialPort _connection = new SerialPort();
     private Thread _worker;
     bool _shouldAbort = true;
 
     public string Port
     {
-      get { return _port; }
+      get { return _connection.PortName; }
     }
 
     public int Baud
     {
-      get { return _baud; }
+      get { return _connection.BaudRate; }
     }
 
-    public delegate void ButtonStateDelegate(int index, bool state);
-    public delegate void PotStateDelegate(int value);
-
-    public event ButtonStateDelegate ButtonStateChanged;
-    public event PotStateDelegate PotStateChanged;
-
-    private void OnButtonStateChanged(int index, bool state)
+    public bool Connected
     {
-      ButtonStateChanged?.Invoke(index, state);
+      get { return _connection != null && _connection.IsOpen; }
     }
 
-    private void OnPotStateChanged(int value)
+    public event Delegates.VoidDelegate ConnectionDetailsChanged;
+    private void OnConnectionDetailsChanged()
     {
-      PotStateChanged?.Invoke(value);
+      ConnectionDetailsChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// Thrown on exceptions which caused the thread and connection to drop
+    /// </summary>
+    public event Delegates.ExceptionDelegate FatalException;
+    private void OnFatalException(Exception ex)
+    {
+      FatalException?.Invoke(ex);
+    }
+
+    public event Delegates.ButtonStateDelegate ButtonStateReceived;
+    private void OnButtonStateReceived(bool b1, bool b2, bool b3)
+    {
+      ButtonStateReceived?.Invoke(b1, b2, b3);
+    }
+
+    public event Delegates.IntDelegate PotValueChanged;
+    private void OnPotValueChanged(int value)
+    {
+      PotValueChanged?.Invoke(value);
     }
 
     public void Connect(string port, int baud)
     {
-      if (_worker != null || _connection != null) throw new Exception("Already connected");
+      if (_connection.IsOpen) throw new Exception("Already connected");
 
-      _port = port;
-      _baud = baud;
+      _connection.PortName = port;
+      _connection.BaudRate = baud;
 
       _worker = new Thread(Work);
       _worker.IsBackground = true;
@@ -60,59 +74,50 @@ namespace ArduinoPedalBridge
     {
       _shouldAbort = true;
       if (_worker != null) _worker.Join();
-      _worker = null;
-      _connection = null;
     }
 
     private void Work()
     {
-      /*
-       BUTTON BYTE
-        76543210
-        0IIIIIIS
-       
-        0 - indicates a button
-        I - button index
-        S - button state
-
-        POT BYTE
-        76543210
-        1VVVVVVV
-
-        1 - indicates a pot
-        V - pot value
-       */
-
-      _connection = new SerialPort(_port, _baud);
-      _connection.Open();
-
-      while (_connection.IsOpen && !_shouldAbort)
+      try
       {
-        while (_connection.BytesToRead > 0)
+        _connection.Open();
+
+        OnConnectionDetailsChanged();
+
+        while (_connection.IsOpen && !_shouldAbort)
         {
-          byte data = (byte)_connection.ReadByte();
+          while (_connection.BytesToRead > 0)
+          {
+            byte data = (byte)_connection.ReadByte();
 
-          if ((data & 128) == 0)
-          {
-            //button
-            int index = (data & 126) >> 1;
-            bool state = (data & 1) == 1;
-            OnButtonStateChanged(index, state);
+            if ((data & 128) == 0)
+            {
+              //buttons
+              bool button1 = (data & 1) == 1;
+              bool button2 = (data & 2) == 2;
+              bool button3 = (data & 4) == 4;
+              OnButtonStateReceived(button1, button2, button3);
+            }
+            else
+            {
+              //pot
+              int value = (data & 127);
+              OnPotValueChanged(value);
+            }
           }
-          else
-          {
-            //pot
-            int value = (data & 127);
-            OnPotStateChanged(value);
-          }
+          Thread.Sleep(1);
         }
-        Thread.Sleep(1);
       }
-
-      _connection.Close();
-      _connection.Dispose();
-      _connection = null;
-      _worker = null;
+      catch (Exception ex)
+      {
+        OnFatalException(ex);
+      }
+      finally
+      {
+        _connection.Close();
+        _worker = null;
+        OnConnectionDetailsChanged();
+      }
     }
   }
 }

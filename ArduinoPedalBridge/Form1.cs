@@ -13,40 +13,73 @@ namespace ArduinoPedalBridge
 {
   public partial class Form1 : Form
   {
-    ArduinoConnection _connection = new ArduinoConnection();
-    VirtualMIDI midi = null;
+    private bool _formIsClosing = false;
+    VirtualMIDI _midi = null;
+    ArduinoConnection _arduino = new ArduinoConnection();
 
     public Form1()
     {
       InitializeComponent();
-      _connection.ButtonStateChanged += _connection_ButtonStateChanged;
-      _connection.PotStateChanged += _connection_PotStateChanged;
+
+      _arduino.FatalException += _connection_FatalException;
+      _arduino.ConnectionDetailsChanged += _connection_ConnectionDetailsChanged;
+      _arduino.ButtonStateReceived += _connection_ButtonStateReceived;
+      _arduino.PotValueChanged += _connection_PotValueChanged;
     }
 
-    private void _connection_PotStateChanged(int value)
+    private void _connection_PotValueChanged(int value)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new MethodInvoker(() => _connection_PotStateChanged(value)));
+        this.BeginInvoke(new MethodInvoker(delegate { _connection_PotValueChanged(value); }));
         return;
       }
 
-      lblPot.Text = value.ToString();
+      txtArduinoPedalValue.Text = value.ToString();
 
-      MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, MIDIChannel.C1, 0, (byte)value);
-      midi.sendCommand(message.GetBytes());
+      byte channelByte = 0;
+      byte controller = 0;
+      byte val = Convert.ToByte(value);
+
+      MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, (MIDIChannel)channelByte, controller, val);
+      _midi.sendCommand(message.GetBytes());
     }
 
-    private void _connection_ButtonStateChanged(int index, bool state)
+    private void _connection_ButtonStateReceived(bool button1, bool button2, bool button3)
     {
       if (this.InvokeRequired)
       {
-        this.BeginInvoke(new MethodInvoker(() => _connection_ButtonStateChanged(index, state)));
+        this.BeginInvoke(new MethodInvoker(delegate { _connection_ButtonStateReceived(button1, button2, button3); }));
         return;
       }
 
-      if (index == 0) lblButton1.Text = state.ToString();
-      else lblButton2.Text = state.ToString();
+      StringBuilder sb = new StringBuilder();
+
+      sb.Append(button1 ? "1 " : "0 ");
+      sb.Append(button2 ? "1 " : "0 ");
+      sb.Append(button3 ? "1 " : "0 ");
+
+      txtArduinoButtons.Text = sb.ToString();
+    }
+
+    private void _connection_ConnectionDetailsChanged()
+    {
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new MethodInvoker(_connection_ConnectionDetailsChanged));
+        return;
+      }
+
+      if (_formIsClosing) return;
+
+      txtArduinoConnectionStatus.Text = _arduino.Connected ? "Connected" : "Disconnected";
+      txtArduinoConnectionPort.Text = _arduino.Port.ToString();
+      txtArduinoConnectionBaud.Text = _arduino.Baud.ToString();
+    }
+
+    private void _connection_FatalException(Exception ex)
+    {
+      throw new NotImplementedException();
     }
 
     private void LoadSettings()
@@ -91,16 +124,8 @@ namespace ArduinoPedalBridge
     {
       try
       {
-        LoadSettings();
-
-        try
-        {
-          midi = new VirtualMIDI("Brc MIDI port");
-        }
-        catch (Exception ex)
-        {
-          MessageBox.Show(ex.Message);
-        }
+        _arduino.Connect("COM3", 38400);
+        _midi = new VirtualMIDI("Brc MIDI port");
       }
       catch (Exception ex)
       {
@@ -127,52 +152,22 @@ namespace ArduinoPedalBridge
       }
     }
 
-    private void button1_Click(object sender, EventArgs e)
-    {
-      try
-      {
-
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show(ex.Message);
-      }
-    }
-
-    private string ByteToBitString(int data)
-    {
-      char[] characters = new char[8];
-
-      for (int x = 0; x <= 7; x++)
-      {
-        if ((data & Convert.ToInt32(Math.Pow(2, x))) > 0)
-        {
-          characters[7 - x] = '1';
-        }
-        else
-        {
-          characters[7 - x] = '0';
-        }
-      }
-      return new string(characters);
-    }
-
-    private void btnConnect_Click(object sender, EventArgs e)
-    {
-      try
-      {
-        int a = int.Parse(textBox1.Text);
-        label1.Text = ByteToBitString(a);
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show(ex.Message);
-      }
-    }
-
     private void Form1_FormClosed(object sender, FormClosedEventArgs e)
     {
-      _connection.Disconnect();
+      try
+      {
+        if (_arduino.Connected) _arduino.Disconnect();
+        if (_midi != null) _midi.shutdown();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      _formIsClosing = true;
     }
   }
 }

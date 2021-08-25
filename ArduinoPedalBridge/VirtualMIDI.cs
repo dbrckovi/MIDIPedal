@@ -200,7 +200,6 @@ namespace ArduinoPedalBridge
       return virtualMIDILogging(loggingMask);
     }
 
-
     public void shutdown()
     {
       if (!virtualMIDIShutdown(fInstance))
