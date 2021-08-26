@@ -35,8 +35,7 @@ namespace ArduinoPedalBridge
       this.cmbSerialBaud = new System.Windows.Forms.ComboBox();
       this.btnTestSerial = new System.Windows.Forms.Button();
       this.grpArduinoConnection = new System.Windows.Forms.GroupBox();
-      this.txtArduinoPedalValue = new System.Windows.Forms.Label();
-      this.lblArduinoPedal = new System.Windows.Forms.Label();
+      this.pedalValue = new ArduinoPedalBridge.PotVisualizer();
       this.txtArduinoButtons = new System.Windows.Forms.Label();
       this.lblArduinoButtons = new System.Windows.Forms.Label();
       this.txtArduinoConnectionBaud = new System.Windows.Forms.Label();
@@ -105,8 +104,7 @@ namespace ArduinoPedalBridge
       // 
       // grpArduinoConnection
       // 
-      this.grpArduinoConnection.Controls.Add(this.txtArduinoPedalValue);
-      this.grpArduinoConnection.Controls.Add(this.lblArduinoPedal);
+      this.grpArduinoConnection.Controls.Add(this.pedalValue);
       this.grpArduinoConnection.Controls.Add(this.txtArduinoButtons);
       this.grpArduinoConnection.Controls.Add(this.lblArduinoButtons);
       this.grpArduinoConnection.Controls.Add(this.txtArduinoConnectionBaud);
@@ -117,29 +115,19 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.Controls.Add(this.lblArduinoConnectionStatus);
       this.grpArduinoConnection.Location = new System.Drawing.Point(8, 8);
       this.grpArduinoConnection.Name = "grpArduinoConnection";
-      this.grpArduinoConnection.Size = new System.Drawing.Size(168, 144);
+      this.grpArduinoConnection.Size = new System.Drawing.Size(216, 120);
       this.grpArduinoConnection.TabIndex = 5;
       this.grpArduinoConnection.TabStop = false;
       this.grpArduinoConnection.Text = "Arduino connection";
       // 
-      // txtArduinoPedalValue
+      // pedalValue
       // 
-      this.txtArduinoPedalValue.AutoSize = true;
-      this.txtArduinoPedalValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.txtArduinoPedalValue.Location = new System.Drawing.Point(64, 120);
-      this.txtArduinoPedalValue.Name = "txtArduinoPedalValue";
-      this.txtArduinoPedalValue.Size = new System.Drawing.Size(11, 13);
-      this.txtArduinoPedalValue.TabIndex = 9;
-      this.txtArduinoPedalValue.Text = "-";
-      // 
-      // lblArduinoPedal
-      // 
-      this.lblArduinoPedal.AutoSize = true;
-      this.lblArduinoPedal.Location = new System.Drawing.Point(16, 120);
-      this.lblArduinoPedal.Name = "lblArduinoPedal";
-      this.lblArduinoPedal.Size = new System.Drawing.Size(34, 13);
-      this.lblArduinoPedal.TabIndex = 8;
-      this.lblArduinoPedal.Text = "Pedal";
+      this.pedalValue.Horizontal = false;
+      this.pedalValue.Location = new System.Drawing.Point(176, 16);
+      this.pedalValue.Name = "pedalValue";
+      this.pedalValue.Size = new System.Drawing.Size(32, 96);
+      this.pedalValue.TabIndex = 10;
+      this.pedalValue.Value = 0F;
       // 
       // txtArduinoButtons
       // 
@@ -221,9 +209,9 @@ namespace ArduinoPedalBridge
       // 
       this.groupBox1.Controls.Add(this.label9);
       this.groupBox1.Controls.Add(this.label10);
-      this.groupBox1.Location = new System.Drawing.Point(184, 8);
+      this.groupBox1.Location = new System.Drawing.Point(232, 8);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(376, 144);
+      this.groupBox1.Size = new System.Drawing.Size(312, 120);
       this.groupBox1.TabIndex = 10;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Arduino connection";
@@ -290,11 +278,10 @@ namespace ArduinoPedalBridge
     private System.Windows.Forms.Label lblArduinoConnectionPort;
     private System.Windows.Forms.Label txtArduinoButtons;
     private System.Windows.Forms.Label lblArduinoButtons;
-    private System.Windows.Forms.Label txtArduinoPedalValue;
-    private System.Windows.Forms.Label lblArduinoPedal;
     private System.Windows.Forms.GroupBox groupBox1;
     private System.Windows.Forms.Label label9;
     private System.Windows.Forms.Label label10;
+    private PotVisualizer pedalValue;
   }
 }
 

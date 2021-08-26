@@ -35,7 +35,7 @@ namespace ArduinoPedalBridge
         return;
       }
 
-      txtArduinoPedalValue.Text = value.ToString();
+      pedalValue.Value = (float)value / 127f;
 
       byte channelByte = 0;
       byte controller = 0;
@@ -79,7 +79,13 @@ namespace ArduinoPedalBridge
 
     private void _connection_FatalException(Exception ex)
     {
-      throw new NotImplementedException();
+      if (this.InvokeRequired)
+      {
+        this.BeginInvoke(new MethodInvoker(delegate { _connection_FatalException(ex); }));
+        return;
+      }
+
+      MessageBox.Show(ex.Message);
     }
 
     private void LoadSettings()
