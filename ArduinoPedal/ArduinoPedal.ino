@@ -83,7 +83,7 @@ void handlePot()
 {
   unsigned long elapsed = millis() - potChangeTime;
 
-  if (elapsed > 10)
+  if (elapsed > 1)
   {
     int x = getPotValue();
     if (x != potValue)

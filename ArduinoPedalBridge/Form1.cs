@@ -42,7 +42,7 @@ namespace ArduinoPedalBridge
       byte val = Convert.ToByte(value);
 
       MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, (MIDIChannel)channelByte, controller, val);
-      _midi.sendCommand(message.GetBytes());
+      if (_midi != null) _midi.sendCommand(message.GetBytes());
     }
 
     private void _connection_ButtonStateReceived(bool button1, bool button2, bool button3)
