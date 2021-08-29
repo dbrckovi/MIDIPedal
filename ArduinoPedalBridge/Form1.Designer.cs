@@ -29,13 +29,7 @@ namespace ArduinoPedalBridge
     /// </summary>
     private void InitializeComponent()
     {
-      this.cmbSerialPort = new System.Windows.Forms.ComboBox();
-      this.lblSerialPort = new System.Windows.Forms.Label();
-      this.lblSerialBaud = new System.Windows.Forms.Label();
-      this.cmbSerialBaud = new System.Windows.Forms.ComboBox();
-      this.btnTestSerial = new System.Windows.Forms.Button();
       this.grpArduinoConnection = new System.Windows.Forms.GroupBox();
-      this.pedalValue = new ArduinoPedalBridge.PotVisualizer();
       this.txtArduinoButtons = new System.Windows.Forms.Label();
       this.lblArduinoButtons = new System.Windows.Forms.Label();
       this.txtArduinoConnectionBaud = new System.Windows.Forms.Label();
@@ -44,54 +38,10 @@ namespace ArduinoPedalBridge
       this.lblArduinoConnectionPort = new System.Windows.Forms.Label();
       this.txtArduinoConnectionStatus = new System.Windows.Forms.Label();
       this.lblArduinoConnectionStatus = new System.Windows.Forms.Label();
+      this.pedalValue = new ArduinoPedalBridge.PotVisualizer();
+      this.btnSettings = new System.Windows.Forms.Button();
       this.grpArduinoConnection.SuspendLayout();
       this.SuspendLayout();
-      // 
-      // cmbSerialPort
-      // 
-      this.cmbSerialPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.cmbSerialPort.FormattingEnabled = true;
-      this.cmbSerialPort.Location = new System.Drawing.Point(204, 529);
-      this.cmbSerialPort.Name = "cmbSerialPort";
-      this.cmbSerialPort.Size = new System.Drawing.Size(176, 28);
-      this.cmbSerialPort.TabIndex = 0;
-      // 
-      // lblSerialPort
-      // 
-      this.lblSerialPort.AutoSize = true;
-      this.lblSerialPort.Location = new System.Drawing.Point(108, 529);
-      this.lblSerialPort.Name = "lblSerialPort";
-      this.lblSerialPort.Size = new System.Drawing.Size(81, 20);
-      this.lblSerialPort.TabIndex = 1;
-      this.lblSerialPort.Text = "Serial port";
-      // 
-      // lblSerialBaud
-      // 
-      this.lblSerialBaud.AutoSize = true;
-      this.lblSerialBaud.Location = new System.Drawing.Point(108, 562);
-      this.lblSerialBaud.Name = "lblSerialBaud";
-      this.lblSerialBaud.Size = new System.Drawing.Size(47, 20);
-      this.lblSerialBaud.TabIndex = 3;
-      this.lblSerialBaud.Text = "Baud";
-      // 
-      // cmbSerialBaud
-      // 
-      this.cmbSerialBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.cmbSerialBaud.FormattingEnabled = true;
-      this.cmbSerialBaud.Location = new System.Drawing.Point(204, 562);
-      this.cmbSerialBaud.Name = "cmbSerialBaud";
-      this.cmbSerialBaud.Size = new System.Drawing.Size(176, 28);
-      this.cmbSerialBaud.TabIndex = 2;
-      // 
-      // btnTestSerial
-      // 
-      this.btnTestSerial.Location = new System.Drawing.Point(396, 529);
-      this.btnTestSerial.Name = "btnTestSerial";
-      this.btnTestSerial.Size = new System.Drawing.Size(176, 40);
-      this.btnTestSerial.TabIndex = 4;
-      this.btnTestSerial.Text = "Test serial port";
-      this.btnTestSerial.UseVisualStyleBackColor = true;
-      this.btnTestSerial.Click += new System.EventHandler(this.btnTestSerial_Click);
       // 
       // grpArduinoConnection
       // 
@@ -104,7 +54,7 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.Controls.Add(this.lblArduinoConnectionPort);
       this.grpArduinoConnection.Controls.Add(this.txtArduinoConnectionStatus);
       this.grpArduinoConnection.Controls.Add(this.lblArduinoConnectionStatus);
-      this.grpArduinoConnection.Location = new System.Drawing.Point(12, 12);
+      this.grpArduinoConnection.Location = new System.Drawing.Point(12, 80);
       this.grpArduinoConnection.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.grpArduinoConnection.Name = "grpArduinoConnection";
       this.grpArduinoConnection.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -112,16 +62,6 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.TabIndex = 5;
       this.grpArduinoConnection.TabStop = false;
       this.grpArduinoConnection.Text = "Arduino connection";
-      // 
-      // pedalValue
-      // 
-      this.pedalValue.Horizontal = false;
-      this.pedalValue.Location = new System.Drawing.Point(264, 25);
-      this.pedalValue.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
-      this.pedalValue.Name = "pedalValue";
-      this.pedalValue.Size = new System.Drawing.Size(48, 148);
-      this.pedalValue.TabIndex = 10;
-      this.pedalValue.Value = 0F;
       // 
       // txtArduinoButtons
       // 
@@ -207,17 +147,33 @@ namespace ArduinoPedalBridge
       this.lblArduinoConnectionStatus.TabIndex = 0;
       this.lblArduinoConnectionStatus.Text = "Status";
       // 
+      // pedalValue
+      // 
+      this.pedalValue.Horizontal = false;
+      this.pedalValue.Location = new System.Drawing.Point(264, 25);
+      this.pedalValue.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
+      this.pedalValue.Name = "pedalValue";
+      this.pedalValue.Size = new System.Drawing.Size(48, 148);
+      this.pedalValue.TabIndex = 10;
+      this.pedalValue.Value = 0F;
+      // 
+      // btnSettings
+      // 
+      this.btnSettings.Location = new System.Drawing.Point(8, 8);
+      this.btnSettings.Name = "btnSettings";
+      this.btnSettings.Size = new System.Drawing.Size(88, 32);
+      this.btnSettings.TabIndex = 6;
+      this.btnSettings.Text = "Settings";
+      this.btnSettings.UseVisualStyleBackColor = true;
+      this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1072, 609);
+      this.Controls.Add(this.btnSettings);
       this.Controls.Add(this.grpArduinoConnection);
-      this.Controls.Add(this.btnTestSerial);
-      this.Controls.Add(this.lblSerialBaud);
-      this.Controls.Add(this.cmbSerialBaud);
-      this.Controls.Add(this.lblSerialPort);
-      this.Controls.Add(this.cmbSerialPort);
       this.Name = "Form1";
       this.Text = "Form1";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -226,17 +182,10 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.ResumeLayout(false);
       this.grpArduinoConnection.PerformLayout();
       this.ResumeLayout(false);
-      this.PerformLayout();
 
     }
 
     #endregion
-
-    private System.Windows.Forms.ComboBox cmbSerialPort;
-    private System.Windows.Forms.Label lblSerialPort;
-    private System.Windows.Forms.Label lblSerialBaud;
-    private System.Windows.Forms.ComboBox cmbSerialBaud;
-    private System.Windows.Forms.Button btnTestSerial;
     private System.Windows.Forms.GroupBox grpArduinoConnection;
     private System.Windows.Forms.Label txtArduinoConnectionStatus;
     private System.Windows.Forms.Label lblArduinoConnectionStatus;
@@ -247,6 +196,7 @@ namespace ArduinoPedalBridge
     private System.Windows.Forms.Label txtArduinoButtons;
     private System.Windows.Forms.Label lblArduinoButtons;
     private PotVisualizer pedalValue;
+    private System.Windows.Forms.Button btnSettings;
   }
 }
 

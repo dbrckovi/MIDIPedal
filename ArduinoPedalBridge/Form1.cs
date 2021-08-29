@@ -27,6 +27,12 @@ namespace ArduinoPedalBridge
       _arduino.PotValueChanged += _connection_PotValueChanged;
     }
 
+    private void InitializeConnections()
+    {
+      //_arduino.Connect(Settings.Instance.ComPort, Settings.Instance.BaudRate);
+      //_midi = new VirtualMIDI(Settings.Instance.MidiDeviceName);
+    }
+
     private void _connection_PotValueChanged(int value)
     {
       if (this.InvokeRequired)
@@ -85,72 +91,14 @@ namespace ArduinoPedalBridge
         return;
       }
 
-      MessageBox.Show(ex.Message);
-    }
-
-    private void LoadSettings()
-    {
-      LoadSerialPorts();
-      LoadBaudRates();
-    }
-
-    private void LoadSerialPorts()
-    {
-      cmbSerialPort.Items.Clear();
-      foreach (string port in SerialPort.GetPortNames())
-      {
-        cmbSerialPort.Items.Add(port);
-
-        //TODO: compare with setting and set selected instead of this...
-        if (cmbSerialPort.SelectedItem == null) cmbSerialPort.SelectedItem = port;
-      }
-    }
-
-    private void LoadBaudRates()
-    {
-      cmbSerialBaud.Items.Clear();
-      cmbSerialBaud.Items.Add(300);
-      cmbSerialBaud.Items.Add(600);
-      cmbSerialBaud.Items.Add(1200);
-      cmbSerialBaud.Items.Add(2400);
-      cmbSerialBaud.Items.Add(4800);
-      cmbSerialBaud.Items.Add(9600);
-      cmbSerialBaud.Items.Add(14400);
-      cmbSerialBaud.Items.Add(19200);
-      cmbSerialBaud.Items.Add(28800);
-      cmbSerialBaud.Items.Add(38400);
-      cmbSerialBaud.Items.Add(57600);
-      cmbSerialBaud.Items.Add(115200);
-
-      //TODO: Load from settings
-      cmbSerialBaud.SelectedItem = 38400;
+      MessageBox.Show(this, ex.Message);
     }
 
     private void Form1_Load(object sender, EventArgs e)
     {
       try
       {
-        _arduino.Connect("COM3", 38400);
-        _midi = new VirtualMIDI("Brc MIDI port");
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show(ex.Message);
-      }
-    }
-
-    private void btnTestSerial_Click(object sender, EventArgs e)
-    {
-      try
-      {
-        if (cmbSerialPort.SelectedItem == null) throw new Exception("Port not selected");
-        if (cmbSerialBaud.SelectedItem == null) throw new Exception("Baud not selected");
-
-        string port = (string)cmbSerialPort.SelectedItem;
-        int baud = (int)cmbSerialBaud.SelectedItem;
-
-        frmSerialTester tester = new frmSerialTester(port, baud);
-        tester.ShowDialog(this);
+        InitializeConnections();
       }
       catch (Exception ex)
       {
@@ -174,6 +122,20 @@ namespace ArduinoPedalBridge
     private void Form1_FormClosing(object sender, FormClosingEventArgs e)
     {
       _formIsClosing = true;
+    }
+
+    private void btnSettings_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        frmSettings settingsForm = new frmSettings();
+        DialogResult result = settingsForm.ShowDialog(this);
+        if (result == DialogResult.OK) InitializeConnections();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(this, ex.Message);
+      }
     }
   }
 }
