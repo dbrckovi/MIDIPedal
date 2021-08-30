@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArduinoPedalBridge
 {
-  enum MIDIMessageType
+  public enum MIDIMessageType
   {
     NoteOff = 0x8,
     NoteOn = 0x9,

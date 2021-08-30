@@ -32,6 +32,7 @@ namespace ArduinoPedalBridge
     public string MidiDeviceName { get; set; }
     public PedalBehaviour PedalBehaviour { get; set; }
     public int MIDIButton { get; set; }
+    public List<ButtonEventSetting> ButtonEvents = new List<ButtonEventSetting>();
 
     public static void Load()
     {

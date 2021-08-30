@@ -29,8 +29,13 @@ namespace ArduinoPedalBridge
 
     private void InitializeConnections()
     {
-      //_arduino.Connect(Settings.Instance.ComPort, Settings.Instance.BaudRate);
-      //_midi = new VirtualMIDI(Settings.Instance.MidiDeviceName);
+      if (_arduino.Connected) _arduino.Disconnect();
+      if (_midi != null) _midi.shutdown();
+      
+      _arduino.Connect(Settings.Instance.ComPort, Settings.Instance.BaudRate.Value);
+      _midi = new VirtualMIDI(Settings.Instance.MidiDeviceName);
+
+      txtMIDIDeviceName.Text = Settings.Instance.MidiDeviceName;
     }
 
     private void _connection_PotValueChanged(int value)

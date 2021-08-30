@@ -64,6 +64,41 @@ namespace ArduinoPedalBridge
       else cmbSerialBaud.SelectedItem = null;
 
       txtMidiDeviceName.Text = Settings.Instance.MidiDeviceName;
+
+      BindingList<ButtonEventSetting> eventList = new BindingList<ButtonEventSetting>();
+      foreach (ButtonEventSetting item in Settings.Instance.ButtonEvents)
+      {
+        eventList.Add(item.Copy());
+      }
+      dataButtonEvents.DataSource = eventList;
+    }
+
+    private void AddEvent()
+    {
+      frmButtonEventSettingEditor editor = new frmButtonEventSettingEditor();
+      DialogResult result = editor.ShowDialog(this);
+      if (result == DialogResult.OK)
+      {
+        ((BindingList<ButtonEventSetting>)dataButtonEvents.DataSource).Add(editor.Value);
+      }
+    }
+
+    private void EditEvent()
+    {
+      ButtonEventSetting setting = (ButtonEventSetting)dataButtonEvents.SelectedRows[0].DataBoundItem;
+      frmButtonEventSettingEditor editor = new frmButtonEventSettingEditor(setting);
+      DialogResult result = editor.ShowDialog(this);
+      if (result == DialogResult.OK)
+      {
+        dataButtonEvents.Refresh();
+      }
+    }
+
+    private void DeleteEvent()
+    {
+      ButtonEventSetting setting = (ButtonEventSetting)dataButtonEvents.SelectedRows[0].DataBoundItem;
+      BindingList<ButtonEventSetting> list = (BindingList<ButtonEventSetting>)dataButtonEvents.DataSource;
+      list.Remove(setting);
     }
 
     private void frmSettings_Load(object sender, EventArgs e)
@@ -99,8 +134,15 @@ namespace ArduinoPedalBridge
         Settings.Instance.ComPort = (string)cmbSerialPort.SelectedItem;
         Settings.Instance.BaudRate = (int?)cmbSerialBaud.SelectedItem;
         Settings.Instance.MidiDeviceName = txtMidiDeviceName.Text;
-        
+
+        Settings.Instance.ButtonEvents.Clear();
+        foreach (ButtonEventSetting item in (BindingList<ButtonEventSetting>)dataButtonEvents.DataSource)
+        {
+          Settings.Instance.ButtonEvents.Add(item);
+        }
+
         Settings.Save();
+        this.Close();
       }
       catch (Exception ex)
       {
@@ -118,6 +160,60 @@ namespace ArduinoPedalBridge
       catch (Exception ex)
       {
         MessageBox.Show(this, ex.Message);
+      }
+    }
+
+    private void dataButtonEvents_SelectionChanged(object sender, EventArgs e)
+    {
+      btnEditEvent.Enabled = btnDeleteEvent.Enabled = dataButtonEvents.SelectedRows.Count > 0;
+    }
+
+    private void btnAddEvent_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        AddEvent();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void btnEditEvent_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        EditEvent();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void btnDeleteEvent_Click(object sender, EventArgs e)
+    {
+      try
+      {
+        DeleteEvent();
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+      }
+    }
+
+    private void dataButtonEvents_DoubleClick(object sender, EventArgs e)
+    {
+      if (dataButtonEvents.SelectedRows.Count > 0) EditEvent();
+    }
+
+    private void dataButtonEvents_KeyUp(object sender, KeyEventArgs e)
+    {
+      if (dataButtonEvents.SelectedRows.Count > 0)
+      {
+        if (e.KeyCode == Keys.Delete) DeleteEvent();
       }
     }
   }

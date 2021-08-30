@@ -50,12 +50,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArduinoConnection.cs" />
+    <Compile Include="ButtonEventSetting.cs" />
+    <Compile Include="ComboItem.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmButtonEventSettingEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmButtonEventSettingEditor.Designer.cs">
+      <DependentUpon>frmButtonEventSettingEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSettings.cs">
       <SubType>Form</SubType>
@@ -79,6 +87,9 @@
     <Compile Include="VirtualMIDI.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmButtonEventSettingEditor.resx">
+      <DependentUpon>frmButtonEventSettingEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
