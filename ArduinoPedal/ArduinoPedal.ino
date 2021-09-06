@@ -13,6 +13,7 @@ int buttonState[3];
 int buttonTogglable[3];
 int buttonValue[3];
 int potValue = 0;
+char readBuffer[16];
 
 void setup() 
 {
@@ -24,6 +25,7 @@ void setup()
   pinMode(button[2], INPUT_PULLUP);
   
   serial.begin(38400);
+  serial.setTimeout(1);
   while (!serial) { ; }
 
   buttonTogglable[0] = 1;
@@ -41,7 +43,21 @@ void loop()
 //reads command from a serial port (if available) and handles it
 void handleSerialInput()
 {
-    
+  int bytesToRead = serial.available();
+  if (bytesToRead > 0)
+  {
+    serial.readBytes(readBuffer, 1);
+
+    if ((readBuffer[0] & 128) == 128)
+    {
+      buttonTogglable[0] = (readBuffer[0] & 1) == 1;
+      buttonTogglable[1] = (readBuffer[0] & 2) == 2;
+      buttonTogglable[2] = (readBuffer[0] & 4) == 4;
+    }
+
+    sendButtonValues();
+    sendPotValue();
+  }
 }
 
 //reads input of specified button, if button value was changed, toggles led and sends new button state to serial

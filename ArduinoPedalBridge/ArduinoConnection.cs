@@ -13,6 +13,8 @@ namespace ArduinoPedalBridge
     SerialPort _connection = new SerialPort();
     private Thread _worker;
     bool _shouldAbort = true;
+    bool _pingRequested = false;
+    byte? _configByte = null;
 
     public string Port
     {
@@ -84,8 +86,22 @@ namespace ArduinoPedalBridge
 
         OnConnectionDetailsChanged();
 
+        _pingRequested = true; //triggers the Ardiono to send it's status as soon as it's connected
+
         while (_connection.IsOpen && !_shouldAbort)
         {
+          if (_pingRequested)
+          {
+            _connection.Write(new byte[] { 2 }, 0, 1);
+            _pingRequested = false;
+          }
+
+          if (_configByte.HasValue)
+          {
+            _connection.Write(new byte[] { _configByte.Value }, 0, 1);
+            _configByte = null;
+          }
+
           while (_connection.BytesToRead > 0)
           {
             byte data = (byte)_connection.ReadByte();
@@ -117,6 +133,38 @@ namespace ArduinoPedalBridge
         _connection.Close();
         _worker = null;
         OnConnectionDetailsChanged();
+      }
+    }
+
+    /// <summary>
+    /// Sends ping signal to the Arduino (if connected)
+    /// </summary>
+    public void Ping()
+    {
+      if (Connected) _pingRequested = true;
+    }
+
+    public void SendConfig(bool togglable1, bool togglable2, bool togglable3)
+    {
+      /*
+      Config byte starts with 1.
+      Bit weight represents whether button with that index is togglable.
+      10000TTT
+      76543210
+      7:   indicates that this is a config byte
+      6-3: unused
+      2-0: button togglable
+       */
+
+      if (Connected)
+      {
+        int cfg = 128;
+
+        if (togglable1) cfg = cfg | 1;
+        if (togglable2) cfg = cfg | 2;
+        if (togglable3) cfg = cfg | 4;
+
+        _configByte = (byte)cfg;
       }
     }
   }

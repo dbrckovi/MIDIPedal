@@ -71,6 +71,10 @@ namespace ArduinoPedalBridge
         eventList.Add(item.Copy());
       }
       dataButtonEvents.DataSource = eventList;
+
+      chkButtonTogglable1.Checked = Settings.Instance.ButtonTogglable[0];
+      chkButtonTogglable2.Checked = Settings.Instance.ButtonTogglable[1];
+      chkButtonTogglable3.Checked = Settings.Instance.ButtonTogglable[2];
     }
 
     private void AddEvent()
@@ -141,7 +145,12 @@ namespace ArduinoPedalBridge
           Settings.Instance.ButtonEvents.Add(item);
         }
 
+        Settings.Instance.ButtonTogglable[0] = chkButtonTogglable1.Checked;
+        Settings.Instance.ButtonTogglable[1] = chkButtonTogglable2.Checked;
+        Settings.Instance.ButtonTogglable[2] = chkButtonTogglable3.Checked;
+
         Settings.Save();
+        this.DialogResult = DialogResult.OK;
         this.Close();
       }
       catch (Exception ex)

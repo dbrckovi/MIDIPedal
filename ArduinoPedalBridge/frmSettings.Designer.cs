@@ -51,6 +51,10 @@ namespace ArduinoPedalBridge
       this.colMessageType = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.colNote = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.colVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.chkButtonTogglable1 = new System.Windows.Forms.CheckBox();
+      this.chkButtonTogglable2 = new System.Windows.Forms.CheckBox();
+      this.chkButtonTogglable3 = new System.Windows.Forms.CheckBox();
+      this.label1 = new System.Windows.Forms.Label();
       this.grpArduinoConnection.SuspendLayout();
       this.grpVirtualMIDI.SuspendLayout();
       this.groupBox1.SuspendLayout();
@@ -59,6 +63,10 @@ namespace ArduinoPedalBridge
       // 
       // grpArduinoConnection
       // 
+      this.grpArduinoConnection.Controls.Add(this.label1);
+      this.grpArduinoConnection.Controls.Add(this.chkButtonTogglable3);
+      this.grpArduinoConnection.Controls.Add(this.chkButtonTogglable2);
+      this.grpArduinoConnection.Controls.Add(this.chkButtonTogglable1);
       this.grpArduinoConnection.Controls.Add(this.lnkRefreshComPorts);
       this.grpArduinoConnection.Controls.Add(this.lblSerialBaud);
       this.grpArduinoConnection.Controls.Add(this.cmbSerialBaud);
@@ -68,7 +76,7 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.Margin = new System.Windows.Forms.Padding(2);
       this.grpArduinoConnection.Name = "grpArduinoConnection";
       this.grpArduinoConnection.Padding = new System.Windows.Forms.Padding(2);
-      this.grpArduinoConnection.Size = new System.Drawing.Size(256, 72);
+      this.grpArduinoConnection.Size = new System.Drawing.Size(256, 136);
       this.grpArduinoConnection.TabIndex = 0;
       this.grpArduinoConnection.TabStop = false;
       this.grpArduinoConnection.Text = "Arduino connection";
@@ -88,7 +96,7 @@ namespace ArduinoPedalBridge
       // lblSerialBaud
       // 
       this.lblSerialBaud.AutoSize = true;
-      this.lblSerialBaud.Location = new System.Drawing.Point(11, 42);
+      this.lblSerialBaud.Location = new System.Drawing.Point(8, 40);
       this.lblSerialBaud.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.lblSerialBaud.Name = "lblSerialBaud";
       this.lblSerialBaud.Size = new System.Drawing.Size(32, 13);
@@ -99,7 +107,7 @@ namespace ArduinoPedalBridge
       // 
       this.cmbSerialBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.cmbSerialBaud.FormattingEnabled = true;
-      this.cmbSerialBaud.Location = new System.Drawing.Point(75, 42);
+      this.cmbSerialBaud.Location = new System.Drawing.Point(72, 40);
       this.cmbSerialBaud.Margin = new System.Windows.Forms.Padding(2);
       this.cmbSerialBaud.Name = "cmbSerialBaud";
       this.cmbSerialBaud.Size = new System.Drawing.Size(119, 21);
@@ -108,7 +116,7 @@ namespace ArduinoPedalBridge
       // lblSerialPort
       // 
       this.lblSerialPort.AutoSize = true;
-      this.lblSerialPort.Location = new System.Drawing.Point(11, 21);
+      this.lblSerialPort.Location = new System.Drawing.Point(8, 16);
       this.lblSerialPort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.lblSerialPort.Name = "lblSerialPort";
       this.lblSerialPort.Size = new System.Drawing.Size(54, 13);
@@ -119,7 +127,7 @@ namespace ArduinoPedalBridge
       // 
       this.cmbSerialPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.cmbSerialPort.FormattingEnabled = true;
-      this.cmbSerialPort.Location = new System.Drawing.Point(75, 21);
+      this.cmbSerialPort.Location = new System.Drawing.Point(72, 16);
       this.cmbSerialPort.Margin = new System.Windows.Forms.Padding(2);
       this.cmbSerialPort.Name = "cmbSerialPort";
       this.cmbSerialPort.Size = new System.Drawing.Size(119, 21);
@@ -152,7 +160,7 @@ namespace ArduinoPedalBridge
       // 
       this.grpVirtualMIDI.Controls.Add(this.txtMidiDeviceName);
       this.grpVirtualMIDI.Controls.Add(this.lblMidiDeviceName);
-      this.grpVirtualMIDI.Location = new System.Drawing.Point(8, 88);
+      this.grpVirtualMIDI.Location = new System.Drawing.Point(8, 152);
       this.grpVirtualMIDI.Margin = new System.Windows.Forms.Padding(2);
       this.grpVirtualMIDI.Name = "grpVirtualMIDI";
       this.grpVirtualMIDI.Padding = new System.Windows.Forms.Padding(2);
@@ -299,6 +307,46 @@ namespace ArduinoPedalBridge
       this.colVolume.ReadOnly = true;
       this.colVolume.Width = 67;
       // 
+      // chkButtonTogglable1
+      // 
+      this.chkButtonTogglable1.AutoSize = true;
+      this.chkButtonTogglable1.Location = new System.Drawing.Point(72, 72);
+      this.chkButtonTogglable1.Name = "chkButtonTogglable1";
+      this.chkButtonTogglable1.Size = new System.Drawing.Size(66, 17);
+      this.chkButtonTogglable1.TabIndex = 9;
+      this.chkButtonTogglable1.Text = "Button 0";
+      this.chkButtonTogglable1.UseVisualStyleBackColor = true;
+      // 
+      // chkButtonTogglable2
+      // 
+      this.chkButtonTogglable2.AutoSize = true;
+      this.chkButtonTogglable2.Location = new System.Drawing.Point(72, 88);
+      this.chkButtonTogglable2.Name = "chkButtonTogglable2";
+      this.chkButtonTogglable2.Size = new System.Drawing.Size(66, 17);
+      this.chkButtonTogglable2.TabIndex = 10;
+      this.chkButtonTogglable2.Text = "Button 1";
+      this.chkButtonTogglable2.UseVisualStyleBackColor = true;
+      // 
+      // chkButtonTogglable3
+      // 
+      this.chkButtonTogglable3.AutoSize = true;
+      this.chkButtonTogglable3.Location = new System.Drawing.Point(72, 104);
+      this.chkButtonTogglable3.Name = "chkButtonTogglable3";
+      this.chkButtonTogglable3.Size = new System.Drawing.Size(66, 17);
+      this.chkButtonTogglable3.TabIndex = 11;
+      this.chkButtonTogglable3.Text = "Button 2";
+      this.chkButtonTogglable3.UseVisualStyleBackColor = true;
+      // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(8, 72);
+      this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(54, 13);
+      this.label1.TabIndex = 12;
+      this.label1.Text = "Togglable";
+      // 
       // frmSettings
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,5 +396,9 @@ namespace ArduinoPedalBridge
     private System.Windows.Forms.Button btnDeleteEvent;
     private System.Windows.Forms.Button btnEditEvent;
     private System.Windows.Forms.Button btnAddEvent;
+    private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.CheckBox chkButtonTogglable3;
+    private System.Windows.Forms.CheckBox chkButtonTogglable2;
+    private System.Windows.Forms.CheckBox chkButtonTogglable1;
   }
 }

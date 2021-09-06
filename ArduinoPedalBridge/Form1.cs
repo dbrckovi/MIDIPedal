@@ -31,7 +31,7 @@ namespace ArduinoPedalBridge
     {
       if (_arduino.Connected) _arduino.Disconnect();
       if (_midi != null) _midi.shutdown();
-      
+
       _arduino.Connect(Settings.Instance.ComPort, Settings.Instance.BaudRate.Value);
       _midi = new VirtualMIDI(Settings.Instance.MidiDeviceName);
 
@@ -64,13 +64,9 @@ namespace ArduinoPedalBridge
         return;
       }
 
-      StringBuilder sb = new StringBuilder();
-
-      sb.Append(button1 ? "1 " : "0 ");
-      sb.Append(button2 ? "1 " : "0 ");
-      sb.Append(button3 ? "1 " : "0 ");
-
-      txtArduinoButtons.Text = sb.ToString();
+      buttonState1.On = button1;
+      buttonState2.On = button2;
+      buttonState3.On = button3;
     }
 
     private void _connection_ConnectionDetailsChanged()
@@ -86,6 +82,8 @@ namespace ArduinoPedalBridge
       txtArduinoConnectionStatus.Text = _arduino.Connected ? "Connected" : "Disconnected";
       txtArduinoConnectionPort.Text = _arduino.Port.ToString();
       txtArduinoConnectionBaud.Text = _arduino.Baud.ToString();
+
+      if (_arduino.Connected) _arduino.SendConfig(Settings.Instance.ButtonTogglable[0], Settings.Instance.ButtonTogglable[1], Settings.Instance.ButtonTogglable[2]);
     }
 
     private void _connection_FatalException(Exception ex)
@@ -141,6 +139,21 @@ namespace ArduinoPedalBridge
       {
         MessageBox.Show(this, ex.Message);
       }
+    }
+
+    private void btnArduinoPing_Click(object sender, EventArgs e)
+    {
+      _arduino.Ping();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+      _arduino.SendConfig(false, false, false);
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+      _arduino.SendConfig(true, true, true);
     }
   }
 }

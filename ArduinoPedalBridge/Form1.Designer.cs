@@ -30,8 +30,10 @@ namespace ArduinoPedalBridge
     private void InitializeComponent()
     {
       this.grpArduinoConnection = new System.Windows.Forms.GroupBox();
-      this.txtArduinoButtons = new System.Windows.Forms.Label();
-      this.lblArduinoButtons = new System.Windows.Forms.Label();
+      this.buttonState3 = new ArduinoPedalBridge.ButtonState();
+      this.buttonState2 = new ArduinoPedalBridge.ButtonState();
+      this.buttonState1 = new ArduinoPedalBridge.ButtonState();
+      this.pedalValue = new ArduinoPedalBridge.PotVisualizer();
       this.txtArduinoConnectionBaud = new System.Windows.Forms.Label();
       this.txtArduinoConnectionPort = new System.Windows.Forms.Label();
       this.lblArduinoConnectionBaud = new System.Windows.Forms.Label();
@@ -40,18 +42,22 @@ namespace ArduinoPedalBridge
       this.lblArduinoConnectionStatus = new System.Windows.Forms.Label();
       this.btnSettings = new System.Windows.Forms.Button();
       this.grpMIDIDevice = new System.Windows.Forms.GroupBox();
-      this.label1 = new System.Windows.Forms.Label();
       this.txtMIDIDeviceName = new System.Windows.Forms.Label();
-      this.pedalValue = new ArduinoPedalBridge.PotVisualizer();
+      this.label1 = new System.Windows.Forms.Label();
+      this.btnArduinoPing = new System.Windows.Forms.Button();
+      this.button1 = new System.Windows.Forms.Button();
+      this.button2 = new System.Windows.Forms.Button();
       this.grpArduinoConnection.SuspendLayout();
       this.grpMIDIDevice.SuspendLayout();
       this.SuspendLayout();
       // 
       // grpArduinoConnection
       // 
+      this.grpArduinoConnection.Controls.Add(this.btnArduinoPing);
+      this.grpArduinoConnection.Controls.Add(this.buttonState3);
+      this.grpArduinoConnection.Controls.Add(this.buttonState2);
+      this.grpArduinoConnection.Controls.Add(this.buttonState1);
       this.grpArduinoConnection.Controls.Add(this.pedalValue);
-      this.grpArduinoConnection.Controls.Add(this.txtArduinoButtons);
-      this.grpArduinoConnection.Controls.Add(this.lblArduinoButtons);
       this.grpArduinoConnection.Controls.Add(this.txtArduinoConnectionBaud);
       this.grpArduinoConnection.Controls.Add(this.txtArduinoConnectionPort);
       this.grpArduinoConnection.Controls.Add(this.lblArduinoConnectionBaud);
@@ -60,35 +66,59 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.Controls.Add(this.lblArduinoConnectionStatus);
       this.grpArduinoConnection.Location = new System.Drawing.Point(8, 32);
       this.grpArduinoConnection.Name = "grpArduinoConnection";
-      this.grpArduinoConnection.Size = new System.Drawing.Size(504, 80);
+      this.grpArduinoConnection.Size = new System.Drawing.Size(368, 112);
       this.grpArduinoConnection.TabIndex = 5;
       this.grpArduinoConnection.TabStop = false;
       this.grpArduinoConnection.Text = "Arduino connection";
       // 
-      // txtArduinoButtons
+      // buttonState3
       // 
-      this.txtArduinoButtons.AutoSize = true;
-      this.txtArduinoButtons.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.txtArduinoButtons.Location = new System.Drawing.Point(448, 24);
-      this.txtArduinoButtons.Name = "txtArduinoButtons";
-      this.txtArduinoButtons.Size = new System.Drawing.Size(11, 13);
-      this.txtArduinoButtons.TabIndex = 7;
-      this.txtArduinoButtons.Text = "-";
+      this.buttonState3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.buttonState3.Index = 2;
+      this.buttonState3.Location = new System.Drawing.Point(304, 24);
+      this.buttonState3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+      this.buttonState3.Name = "buttonState3";
+      this.buttonState3.On = false;
+      this.buttonState3.Size = new System.Drawing.Size(40, 40);
+      this.buttonState3.TabIndex = 13;
       // 
-      // lblArduinoButtons
+      // buttonState2
       // 
-      this.lblArduinoButtons.AutoSize = true;
-      this.lblArduinoButtons.Location = new System.Drawing.Point(400, 24);
-      this.lblArduinoButtons.Name = "lblArduinoButtons";
-      this.lblArduinoButtons.Size = new System.Drawing.Size(43, 13);
-      this.lblArduinoButtons.TabIndex = 6;
-      this.lblArduinoButtons.Text = "Buttons";
+      this.buttonState2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.buttonState2.Index = 1;
+      this.buttonState2.Location = new System.Drawing.Point(256, 24);
+      this.buttonState2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+      this.buttonState2.Name = "buttonState2";
+      this.buttonState2.On = false;
+      this.buttonState2.Size = new System.Drawing.Size(40, 40);
+      this.buttonState2.TabIndex = 12;
+      // 
+      // buttonState1
+      // 
+      this.buttonState1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.buttonState1.Index = 0;
+      this.buttonState1.Location = new System.Drawing.Point(208, 24);
+      this.buttonState1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+      this.buttonState1.Name = "buttonState1";
+      this.buttonState1.On = false;
+      this.buttonState1.Size = new System.Drawing.Size(40, 40);
+      this.buttonState1.TabIndex = 11;
+      // 
+      // pedalValue
+      // 
+      this.pedalValue.Horizontal = true;
+      this.pedalValue.Location = new System.Drawing.Point(16, 80);
+      this.pedalValue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.pedalValue.Name = "pedalValue";
+      this.pedalValue.Size = new System.Drawing.Size(336, 24);
+      this.pedalValue.TabIndex = 10;
+      this.pedalValue.Value = 0F;
       // 
       // txtArduinoConnectionBaud
       // 
       this.txtArduinoConnectionBaud.AutoSize = true;
       this.txtArduinoConnectionBaud.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.txtArduinoConnectionBaud.Location = new System.Drawing.Point(344, 24);
+      this.txtArduinoConnectionBaud.Location = new System.Drawing.Point(64, 56);
       this.txtArduinoConnectionBaud.Name = "txtArduinoConnectionBaud";
       this.txtArduinoConnectionBaud.Size = new System.Drawing.Size(11, 13);
       this.txtArduinoConnectionBaud.TabIndex = 5;
@@ -98,7 +128,7 @@ namespace ArduinoPedalBridge
       // 
       this.txtArduinoConnectionPort.AutoSize = true;
       this.txtArduinoConnectionPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.txtArduinoConnectionPort.Location = new System.Drawing.Point(224, 24);
+      this.txtArduinoConnectionPort.Location = new System.Drawing.Point(64, 40);
       this.txtArduinoConnectionPort.Name = "txtArduinoConnectionPort";
       this.txtArduinoConnectionPort.Size = new System.Drawing.Size(11, 13);
       this.txtArduinoConnectionPort.TabIndex = 4;
@@ -107,7 +137,7 @@ namespace ArduinoPedalBridge
       // lblArduinoConnectionBaud
       // 
       this.lblArduinoConnectionBaud.AutoSize = true;
-      this.lblArduinoConnectionBaud.Location = new System.Drawing.Point(296, 24);
+      this.lblArduinoConnectionBaud.Location = new System.Drawing.Point(16, 56);
       this.lblArduinoConnectionBaud.Name = "lblArduinoConnectionBaud";
       this.lblArduinoConnectionBaud.Size = new System.Drawing.Size(32, 13);
       this.lblArduinoConnectionBaud.TabIndex = 3;
@@ -116,7 +146,7 @@ namespace ArduinoPedalBridge
       // lblArduinoConnectionPort
       // 
       this.lblArduinoConnectionPort.AutoSize = true;
-      this.lblArduinoConnectionPort.Location = new System.Drawing.Point(176, 24);
+      this.lblArduinoConnectionPort.Location = new System.Drawing.Point(16, 40);
       this.lblArduinoConnectionPort.Name = "lblArduinoConnectionPort";
       this.lblArduinoConnectionPort.Size = new System.Drawing.Size(26, 13);
       this.lblArduinoConnectionPort.TabIndex = 2;
@@ -156,21 +186,12 @@ namespace ArduinoPedalBridge
       // 
       this.grpMIDIDevice.Controls.Add(this.txtMIDIDeviceName);
       this.grpMIDIDevice.Controls.Add(this.label1);
-      this.grpMIDIDevice.Location = new System.Drawing.Point(8, 120);
+      this.grpMIDIDevice.Location = new System.Drawing.Point(8, 152);
       this.grpMIDIDevice.Name = "grpMIDIDevice";
-      this.grpMIDIDevice.Size = new System.Drawing.Size(504, 416);
+      this.grpMIDIDevice.Size = new System.Drawing.Size(368, 312);
       this.grpMIDIDevice.TabIndex = 7;
       this.grpMIDIDevice.TabStop = false;
       this.grpMIDIDevice.Text = "MIDI device";
-      // 
-      // label1
-      // 
-      this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(16, 24);
-      this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(35, 13);
-      this.label1.TabIndex = 1;
-      this.label1.Text = "Name";
       // 
       // txtMIDIDeviceName
       // 
@@ -182,21 +203,52 @@ namespace ArduinoPedalBridge
       this.txtMIDIDeviceName.TabIndex = 2;
       this.txtMIDIDeviceName.Text = "Disconnected";
       // 
-      // pedalValue
+      // label1
       // 
-      this.pedalValue.Horizontal = true;
-      this.pedalValue.Location = new System.Drawing.Point(16, 48);
-      this.pedalValue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-      this.pedalValue.Name = "pedalValue";
-      this.pedalValue.Size = new System.Drawing.Size(472, 24);
-      this.pedalValue.TabIndex = 10;
-      this.pedalValue.Value = 0F;
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(16, 24);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(35, 13);
+      this.label1.TabIndex = 1;
+      this.label1.Text = "Name";
+      // 
+      // btnArduinoPing
+      // 
+      this.btnArduinoPing.Location = new System.Drawing.Point(168, 24);
+      this.btnArduinoPing.Name = "btnArduinoPing";
+      this.btnArduinoPing.Size = new System.Drawing.Size(24, 24);
+      this.btnArduinoPing.TabIndex = 14;
+      this.btnArduinoPing.Text = "P";
+      this.btnArduinoPing.UseVisualStyleBackColor = true;
+      this.btnArduinoPing.Click += new System.EventHandler(this.btnArduinoPing_Click);
+      // 
+      // button1
+      // 
+      this.button1.Location = new System.Drawing.Point(96, 480);
+      this.button1.Name = "button1";
+      this.button1.Size = new System.Drawing.Size(72, 24);
+      this.button1.TabIndex = 15;
+      this.button1.Text = "P";
+      this.button1.UseVisualStyleBackColor = true;
+      this.button1.Click += new System.EventHandler(this.button1_Click);
+      // 
+      // button2
+      // 
+      this.button2.Location = new System.Drawing.Point(184, 480);
+      this.button2.Name = "button2";
+      this.button2.Size = new System.Drawing.Size(72, 24);
+      this.button2.TabIndex = 16;
+      this.button2.Text = "P";
+      this.button2.UseVisualStyleBackColor = true;
+      this.button2.Click += new System.EventHandler(this.button2_Click);
       // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(521, 576);
+      this.ClientSize = new System.Drawing.Size(386, 576);
+      this.Controls.Add(this.button2);
+      this.Controls.Add(this.button1);
       this.Controls.Add(this.grpMIDIDevice);
       this.Controls.Add(this.btnSettings);
       this.Controls.Add(this.grpArduinoConnection);
@@ -222,13 +274,17 @@ namespace ArduinoPedalBridge
     private System.Windows.Forms.Label txtArduinoConnectionPort;
     private System.Windows.Forms.Label lblArduinoConnectionBaud;
     private System.Windows.Forms.Label lblArduinoConnectionPort;
-    private System.Windows.Forms.Label txtArduinoButtons;
-    private System.Windows.Forms.Label lblArduinoButtons;
     private PotVisualizer pedalValue;
     private System.Windows.Forms.Button btnSettings;
     private System.Windows.Forms.GroupBox grpMIDIDevice;
     private System.Windows.Forms.Label txtMIDIDeviceName;
     private System.Windows.Forms.Label label1;
+    private ButtonState buttonState3;
+    private ButtonState buttonState2;
+    private ButtonState buttonState1;
+    private System.Windows.Forms.Button btnArduinoPing;
+    private System.Windows.Forms.Button button1;
+    private System.Windows.Forms.Button button2;
   }
 }
 
