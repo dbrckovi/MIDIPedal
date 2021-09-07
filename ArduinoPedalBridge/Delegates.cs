@@ -12,5 +12,6 @@ namespace ArduinoPedalBridge
     public delegate void ExceptionDelegate(Exception ex);
     public delegate void ButtonStateDelegate(bool button1, bool button2, bool button3);
     public delegate void IntDelegate(int value);
+    public delegate void ButtonStateChangedDelegate(int index, bool onState);
   }
 }

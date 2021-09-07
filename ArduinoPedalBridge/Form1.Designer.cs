@@ -30,6 +30,7 @@ namespace ArduinoPedalBridge
     private void InitializeComponent()
     {
       this.grpArduinoConnection = new System.Windows.Forms.GroupBox();
+      this.btnArduinoPing = new System.Windows.Forms.Button();
       this.buttonState3 = new ArduinoPedalBridge.ButtonState();
       this.buttonState2 = new ArduinoPedalBridge.ButtonState();
       this.buttonState1 = new ArduinoPedalBridge.ButtonState();
@@ -44,7 +45,6 @@ namespace ArduinoPedalBridge
       this.grpMIDIDevice = new System.Windows.Forms.GroupBox();
       this.txtMIDIDeviceName = new System.Windows.Forms.Label();
       this.label1 = new System.Windows.Forms.Label();
-      this.btnArduinoPing = new System.Windows.Forms.Button();
       this.button1 = new System.Windows.Forms.Button();
       this.button2 = new System.Windows.Forms.Button();
       this.grpArduinoConnection.SuspendLayout();
@@ -71,6 +71,16 @@ namespace ArduinoPedalBridge
       this.grpArduinoConnection.TabStop = false;
       this.grpArduinoConnection.Text = "Arduino connection";
       // 
+      // btnArduinoPing
+      // 
+      this.btnArduinoPing.Location = new System.Drawing.Point(168, 24);
+      this.btnArduinoPing.Name = "btnArduinoPing";
+      this.btnArduinoPing.Size = new System.Drawing.Size(24, 24);
+      this.btnArduinoPing.TabIndex = 14;
+      this.btnArduinoPing.Text = "P";
+      this.btnArduinoPing.UseVisualStyleBackColor = true;
+      this.btnArduinoPing.Click += new System.EventHandler(this.btnArduinoPing_Click);
+      // 
       // buttonState3
       // 
       this.buttonState3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -81,6 +91,7 @@ namespace ArduinoPedalBridge
       this.buttonState3.On = false;
       this.buttonState3.Size = new System.Drawing.Size(40, 40);
       this.buttonState3.TabIndex = 13;
+      this.buttonState3.OnStateChanged += new ArduinoPedalBridge.Delegates.ButtonStateChangedDelegate(this.button_OnStateChanged);
       // 
       // buttonState2
       // 
@@ -92,6 +103,7 @@ namespace ArduinoPedalBridge
       this.buttonState2.On = false;
       this.buttonState2.Size = new System.Drawing.Size(40, 40);
       this.buttonState2.TabIndex = 12;
+      this.buttonState2.OnStateChanged += new ArduinoPedalBridge.Delegates.ButtonStateChangedDelegate(this.button_OnStateChanged);
       // 
       // buttonState1
       // 
@@ -103,6 +115,7 @@ namespace ArduinoPedalBridge
       this.buttonState1.On = false;
       this.buttonState1.Size = new System.Drawing.Size(40, 40);
       this.buttonState1.TabIndex = 11;
+      this.buttonState1.OnStateChanged += new ArduinoPedalBridge.Delegates.ButtonStateChangedDelegate(this.button_OnStateChanged);
       // 
       // pedalValue
       // 
@@ -211,16 +224,6 @@ namespace ArduinoPedalBridge
       this.label1.Size = new System.Drawing.Size(35, 13);
       this.label1.TabIndex = 1;
       this.label1.Text = "Name";
-      // 
-      // btnArduinoPing
-      // 
-      this.btnArduinoPing.Location = new System.Drawing.Point(168, 24);
-      this.btnArduinoPing.Name = "btnArduinoPing";
-      this.btnArduinoPing.Size = new System.Drawing.Size(24, 24);
-      this.btnArduinoPing.TabIndex = 14;
-      this.btnArduinoPing.Text = "P";
-      this.btnArduinoPing.UseVisualStyleBackColor = true;
-      this.btnArduinoPing.Click += new System.EventHandler(this.btnArduinoPing_Click);
       // 
       // button1
       // 

@@ -24,7 +24,7 @@ void setup()
   pinMode(button[1], INPUT_PULLUP);
   pinMode(button[2], INPUT_PULLUP);
   
-  serial.begin(38400);
+  serial.begin(115200);
   serial.setTimeout(1);
   while (!serial) { ; }
 

@@ -18,12 +18,20 @@ namespace ArduinoPedalBridge
     private bool _on = false;
     private int _index = 0;
 
+    public event Delegates.ButtonStateChangedDelegate OnStateChanged;
+    private void On_OnStateChanged(int index, bool value)
+    {
+      OnStateChanged?.Invoke(index, value);
+    }
+
     public bool On
     {
       get { return _on; }
       set
       {
+        bool changed = _on != value;
         _on = value;
+        if (changed) On_OnStateChanged(_index, _on);
         Refresh();
       }
     }

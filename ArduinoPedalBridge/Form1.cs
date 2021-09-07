@@ -38,6 +38,22 @@ namespace ArduinoPedalBridge
       txtMIDIDeviceName.Text = Settings.Instance.MidiDeviceName;
     }
 
+    private void SendButtonEvents(int index, bool newState)
+    {
+      foreach (ButtonEventSetting setting in Settings.Instance.ButtonEvents)
+      {
+        if (setting.ButtonIndex == index && setting.ButtonPressed == newState)
+        {
+          byte channelByte = setting.Channel;
+          byte note = setting.Note;
+          byte volume = setting.Volume;
+
+          MidiMessage message = new MidiMessage(setting.MessageType, (MIDIChannel)channelByte, note, volume);
+          _midi.sendCommand(message.GetBytes());
+        }
+      }
+    }
+
     private void _connection_PotValueChanged(int value)
     {
       if (this.InvokeRequired)
@@ -46,14 +62,22 @@ namespace ArduinoPedalBridge
         return;
       }
 
-      pedalValue.Value = (float)value / 127f;
+      try
+      {
+        pedalValue.Value = (float)value / 127f;
 
-      byte channelByte = 0;
-      byte controller = 0;
-      byte val = Convert.ToByte(value);
+        byte channelByte = 0;
+        byte controller = 0;
+        byte val = Convert.ToByte(value);
 
-      MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, (MIDIChannel)channelByte, controller, val);
-      if (_midi != null) _midi.sendCommand(message.GetBytes());
+        MidiMessage message = new MidiMessage(MIDIMessageType.ControlChange, (MIDIChannel)channelByte, controller, val);
+        if (_midi != null) _midi.sendCommand(message.GetBytes());
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+        this.Close();
+      }
     }
 
     private void _connection_ButtonStateReceived(bool button1, bool button2, bool button3)
@@ -154,6 +178,19 @@ namespace ArduinoPedalBridge
     private void button2_Click(object sender, EventArgs e)
     {
       _arduino.SendConfig(true, true, true);
+    }
+
+    private void button_OnStateChanged(int buttonIndex, bool value)
+    {
+      try
+      {
+        SendButtonEvents(buttonIndex, value);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show(ex.Message);
+        this.Close();
+      }
     }
   }
 }
