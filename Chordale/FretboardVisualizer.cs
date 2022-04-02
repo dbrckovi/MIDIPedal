@@ -26,6 +26,9 @@ namespace Chordale
     private Font _noteFont = new Font("Arial", 12, FontStyle.Bold);
     private Color _chordNoteColor = Color.Brown;
     private bool _drawFretMarkers = true;
+    private DateTime _visualizeCalledTime = DateTime.Now.AddDays(-1);
+    private double _visualizationDelayMS = 0;
+    private bool _enableVisualization = true;
 
     public float Zoom
     {
@@ -55,11 +58,23 @@ namespace Chordale
       }
     }
 
-    public void VisualizeChord(Chord chord)
+    public void VisualizeChord(Chord chord, double delayMS = 0)
     {
       _drawNegative = false;
       _visualizableElement = chord;
       _drawFretMarkers = true;
+      if (delayMS > 0)
+      {
+        _enableVisualization = false;
+        _visualizationDelayMS = delayMS;
+        _visualizeCalledTime = DateTime.Now;
+        visualizationWaitTimer.Enabled = true;
+      }
+      else
+      {
+        _enableVisualization = true;
+        visualizationWaitTimer.Enabled = false;
+      }
       Redraw();
     }
 
@@ -116,7 +131,7 @@ namespace Chordale
       }
 
       //visualizable element
-      if (_visualizableElement != null)
+      if (_visualizableElement != null && _enableVisualization)
       {
         if (_visualizableElement is Chord) PaintChord(g, (Chord)_visualizableElement);
       }
@@ -212,6 +227,16 @@ namespace Chordale
     private void FretboardVisualizer_SizeChanged(object sender, EventArgs e)
     {
       Redraw();
+    }
+
+    private void visualizationWaitTimer_Tick(object sender, EventArgs e)
+    {
+      TimeSpan span = DateTime.Now - _visualizeCalledTime;
+      if (span.TotalMilliseconds > _visualizationDelayMS)
+      {
+        _enableVisualization = true;
+        Redraw();
+      }
     }
   }
 }

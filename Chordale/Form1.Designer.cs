@@ -29,13 +29,9 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      this.fretboardVisualizer1 = new Chordale.FretboardVisualizer();
       this.panel1 = new System.Windows.Forms.Panel();
       this.lblVisualizedName = new System.Windows.Forms.Label();
       this.panel4 = new System.Windows.Forms.Panel();
-      this.chkIncludeDominant = new Chordale.LabelCheckbox();
-      this.chkIncludeMinor = new Chordale.LabelCheckbox();
-      this.chkIncludeMajor = new Chordale.LabelCheckbox();
       this.lblAuto = new System.Windows.Forms.Label();
       this.lblBPM = new System.Windows.Forms.Label();
       this.trackBPM = new System.Windows.Forms.TrackBar();
@@ -47,22 +43,17 @@
       this.lstScales = new System.Windows.Forms.ListBox();
       this.label2 = new System.Windows.Forms.Label();
       this.autoVisualizer = new System.Windows.Forms.Timer(this.components);
+      this.fretboardVisualizer1 = new Chordale.FretboardVisualizer();
+      this.chkDelay = new Chordale.LabelCheckbox();
+      this.chkIncludeDominant = new Chordale.LabelCheckbox();
+      this.chkIncludeMinor = new Chordale.LabelCheckbox();
+      this.chkIncludeMajor = new Chordale.LabelCheckbox();
       this.panel1.SuspendLayout();
       this.panel4.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBPM)).BeginInit();
       this.panel2.SuspendLayout();
       this.panel3.SuspendLayout();
       this.SuspendLayout();
-      // 
-      // fretboardVisualizer1
-      // 
-      this.fretboardVisualizer1.BackColor = System.Drawing.Color.White;
-      this.fretboardVisualizer1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.fretboardVisualizer1.Location = new System.Drawing.Point(48, 136);
-      this.fretboardVisualizer1.Name = "fretboardVisualizer1";
-      this.fretboardVisualizer1.Size = new System.Drawing.Size(1072, 544);
-      this.fretboardVisualizer1.TabIndex = 0;
-      this.fretboardVisualizer1.Zoom = 2.8F;
       // 
       // panel1
       // 
@@ -88,6 +79,7 @@
       // 
       // panel4
       // 
+      this.panel4.Controls.Add(this.chkDelay);
       this.panel4.Controls.Add(this.chkIncludeDominant);
       this.panel4.Controls.Add(this.chkIncludeMinor);
       this.panel4.Controls.Add(this.chkIncludeMajor);
@@ -99,33 +91,6 @@
       this.panel4.Name = "panel4";
       this.panel4.Size = new System.Drawing.Size(200, 136);
       this.panel4.TabIndex = 1;
-      // 
-      // chkIncludeDominant
-      // 
-      this.chkIncludeDominant.Checked = false;
-      this.chkIncludeDominant.Location = new System.Drawing.Point(112, 8);
-      this.chkIncludeDominant.Name = "chkIncludeDominant";
-      this.chkIncludeDominant.Size = new System.Drawing.Size(64, 16);
-      this.chkIncludeDominant.TabIndex = 8;
-      this.chkIncludeDominant.Text = "Dominant";
-      // 
-      // chkIncludeMinor
-      // 
-      this.chkIncludeMinor.Checked = false;
-      this.chkIncludeMinor.Location = new System.Drawing.Point(64, 8);
-      this.chkIncludeMinor.Name = "chkIncludeMinor";
-      this.chkIncludeMinor.Size = new System.Drawing.Size(40, 16);
-      this.chkIncludeMinor.TabIndex = 7;
-      this.chkIncludeMinor.Text = "Minor";
-      // 
-      // chkIncludeMajor
-      // 
-      this.chkIncludeMajor.Checked = true;
-      this.chkIncludeMajor.Location = new System.Drawing.Point(16, 8);
-      this.chkIncludeMajor.Name = "chkIncludeMajor";
-      this.chkIncludeMajor.Size = new System.Drawing.Size(40, 16);
-      this.chkIncludeMajor.TabIndex = 6;
-      this.chkIncludeMajor.Text = "Major";
       // 
       // lblAuto
       // 
@@ -230,6 +195,52 @@
       // 
       this.autoVisualizer.Tick += new System.EventHandler(this.autoVisualizer_Tick);
       // 
+      // fretboardVisualizer1
+      // 
+      this.fretboardVisualizer1.BackColor = System.Drawing.Color.White;
+      this.fretboardVisualizer1.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.fretboardVisualizer1.Location = new System.Drawing.Point(48, 136);
+      this.fretboardVisualizer1.Name = "fretboardVisualizer1";
+      this.fretboardVisualizer1.Size = new System.Drawing.Size(1072, 544);
+      this.fretboardVisualizer1.TabIndex = 0;
+      this.fretboardVisualizer1.Zoom = 2.8F;
+      // 
+      // chkDelay
+      // 
+      this.chkDelay.Checked = true;
+      this.chkDelay.Location = new System.Drawing.Point(56, 94);
+      this.chkDelay.Name = "chkDelay";
+      this.chkDelay.Size = new System.Drawing.Size(40, 16);
+      this.chkDelay.TabIndex = 9;
+      this.chkDelay.Text = "Delay";
+      // 
+      // chkIncludeDominant
+      // 
+      this.chkIncludeDominant.Checked = false;
+      this.chkIncludeDominant.Location = new System.Drawing.Point(112, 8);
+      this.chkIncludeDominant.Name = "chkIncludeDominant";
+      this.chkIncludeDominant.Size = new System.Drawing.Size(64, 16);
+      this.chkIncludeDominant.TabIndex = 8;
+      this.chkIncludeDominant.Text = "Dominant";
+      // 
+      // chkIncludeMinor
+      // 
+      this.chkIncludeMinor.Checked = false;
+      this.chkIncludeMinor.Location = new System.Drawing.Point(64, 8);
+      this.chkIncludeMinor.Name = "chkIncludeMinor";
+      this.chkIncludeMinor.Size = new System.Drawing.Size(40, 16);
+      this.chkIncludeMinor.TabIndex = 7;
+      this.chkIncludeMinor.Text = "Minor";
+      // 
+      // chkIncludeMajor
+      // 
+      this.chkIncludeMajor.Checked = true;
+      this.chkIncludeMajor.Location = new System.Drawing.Point(16, 8);
+      this.chkIncludeMajor.Name = "chkIncludeMajor";
+      this.chkIncludeMajor.Size = new System.Drawing.Size(40, 16);
+      this.chkIncludeMajor.TabIndex = 6;
+      this.chkIncludeMajor.Text = "Major";
+      // 
       // Form1
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -275,6 +286,7 @@
     private LabelCheckbox chkIncludeDominant;
     private LabelCheckbox chkIncludeMinor;
     private LabelCheckbox chkIncludeMajor;
+    private LabelCheckbox chkDelay;
   }
 }
 

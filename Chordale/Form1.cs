@@ -59,7 +59,14 @@ namespace Chordale
       {
         Chord c = (Chord)lstChords.SelectedItem;
         lblVisualizedName.Text = c.Name;
-        fretboardVisualizer1.VisualizeChord(c);
+
+        double visualizationDelay = 0;
+        if (chkDelay.Checked)
+        {
+          double waitTimeMS = (60 / trackBPM.Value) * 1000;
+          visualizationDelay = waitTimeMS / 2;
+        }
+        fretboardVisualizer1.VisualizeChord(c, visualizationDelay);
       }
     }
 
@@ -85,6 +92,7 @@ namespace Chordale
     private void autoVisualizer_Tick(object sender, EventArgs e)
     {
       double waitTimeMS = (60 / trackBPM.Value) * 1000;
+      double visualizeTime = waitTimeMS / 2;
 
       TimeSpan span = DateTime.Now - _lastRandomTime;
       if (span.TotalMilliseconds > waitTimeMS) ShowRandomChord();

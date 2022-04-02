@@ -13,6 +13,7 @@ namespace Chordale
     /// </summary>
     public Dictionary<StringName, int> StringState;
     public ChordType ChordType = ChordType.Unknown;
+    public static Chord Empty = new Chord("-", ChordType.Unknown, -1, -1, -1, -1, -1, -1);
 
     public Chord(string name, ChordType chordType)
     {

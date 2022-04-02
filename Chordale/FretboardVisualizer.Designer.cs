@@ -28,7 +28,13 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
+      this.visualizationWaitTimer = new System.Windows.Forms.Timer(this.components);
       this.SuspendLayout();
+      // 
+      // visualizationWaitTimer
+      // 
+      this.visualizationWaitTimer.Tick += new System.EventHandler(this.visualizationWaitTimer_Tick);
       // 
       // FretboardVisualizer
       // 
@@ -45,5 +51,7 @@
     }
 
     #endregion
+
+    private System.Windows.Forms.Timer visualizationWaitTimer;
   }
 }
