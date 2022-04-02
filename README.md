@@ -20,6 +20,9 @@ ArduinoPedal
 MIDITest 
     - C# Windows Forms solution
     - Generates MIDI signals on Virtual MIDI device
+    
+Chordale
+    - Guitar Chord / Scale visualizer. It will probably be moved somewhere else if I continue to develop it.
 
 [LIBRARIES]
 
